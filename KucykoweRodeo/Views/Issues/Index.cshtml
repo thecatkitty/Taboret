@@ -1,0 +1,77 @@
+﻿@using System.Globalization
+@using System.Text.RegularExpressions
+@model IEnumerable<KucykoweRodeo.Models.Issue>
+
+@{
+ ViewData["Title"] = "Wydania";
+ Layout = "_Layout";
+}
+
+<h1>Wydania</h1>
+
+<div class="row">
+ <div class="container">
+
+  <div class="row">
+
+   <div class="col text-center">
+    <p>Skatalogowano</p>
+   </div>
+
+  </div>
+
+  <div class="row">
+
+   <div class="col text-center">
+    <h4>Wydań</h4>
+    <p>@Model.Count(issue => issue.IsArchived) z @Model.Count()</p>
+   </div>
+
+   <div class="col text-center">
+    <h4>Artykułów</h4>
+    <p>@Model.SelectMany(issue => issue.Articles).Count()</p>
+   </div>
+
+   <div class="col text-center">
+    <h4>Wyrazów</h4>
+    <p>@Model.SelectMany(issue => issue.Articles).Sum(article => article.WordCount)</p>
+   </div>
+
+  </div>
+
+ </div>
+</div>
+
+@foreach (var year in Model
+ .OrderBy(issue => issue.PublicationDate.Year)
+ .GroupBy(issue => issue.PublicationDate.Year))
+{
+ <div class="row">
+
+  <div class="col-2">
+   <h3>@year.Key</h3>
+  </div>
+
+  <div class="col">
+   @foreach (var magazine in year
+    .OrderBy(issue => issue.Magazine.Name)
+    .GroupBy(issue => issue.Magazine))
+   {
+    <p>
+     <b>@magazine.Key.Name:</b>
+     @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
+     {
+      <a href="@issue.Url" class="btn btn-sm btn-@(issue.IsArchived ? "success" : issue.Articles.Count > 0 ? "warning" : "danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
+     }
+    </p>
+   }
+  </div>
+
+ </div>
+}
+
+<!--
+<a asp-action="Edit" asp-route-id="item.Signature">Edit</a>
+<a asp-action="Details" asp-route-id="item.Signature">Details</a>
+<a asp-action="Delete" asp-route-id="item.Signature">Delete</a>
+-->
