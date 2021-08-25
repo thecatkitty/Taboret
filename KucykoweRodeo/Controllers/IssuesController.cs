@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,28 +8,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KucykoweRodeo.Data;
 using KucykoweRodeo.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace KucykoweRodeo.Controllers
 {
     public class IssuesController : Controller
     {
         private readonly ArchiveContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public IssuesController(ArchiveContext context)
+        public IssuesController(ArchiveContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: Issues
         public async Task<IActionResult> Index()
         {
-            var archiveContext = _context.Issues
+            var issues = _context.Issues
                 .Include(i => i.Magazine)
                 .Include(i => i.Articles);
-            return View(await archiveContext.ToListAsync());
+            return View(await issues.ToListAsync());
         }
 
-#if false
         // GET: Issues/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -39,15 +42,27 @@ namespace KucykoweRodeo.Controllers
 
             var issue = await _context.Issues
                 .Include(i => i.Magazine)
+                .Include(i => i.Articles)
+                .Include(i => i.CoverAuthors)
+                .Include("Articles.Authors")
+                .Include("Articles.Category")
+                .Include("Articles.Tags")
                 .FirstOrDefaultAsync(m => m.Signature == id);
             if (issue == null)
             {
                 return NotFound();
             }
 
+            var coverPath = "/coth/" + issue.Signature + ".png";
+            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "assets") + coverPath))
+            {
+                ViewData["CoverPath"] = coverPath;
+            }
+
             return View(issue);
         }
 
+#if false
         // GET: Issues/Create
         public IActionResult Create()
         {

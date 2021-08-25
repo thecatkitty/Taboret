@@ -1,60 +1,130 @@
-﻿@model KucykoweRodeo.Models.Issue
+﻿@using System.IO
+@model KucykoweRodeo.Models.Issue
 
 @{
-    ViewData["Title"] = "Details";
+ ViewData["Title"] = $"{Model.Magazine.Name} {Model.CoverSignature}";
+ Layout = "_Layout";
 }
 
-<h1>Details</h1>
+<h1>@Model.Magazine.Name @Model.CoverSignature</h1>
 
-<div>
-    <h4>Issue</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PublicationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PublicationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CoverSignature)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CoverSignature)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PageCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PageCount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsArchived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsArchived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdateTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdateTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Magazine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Magazine.Signature)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Signature">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+
+ <div class="col-md-4">
+  @if (ViewData["CoverPath"] == null)
+  {
+   <img class="d-block mx-auto mw-100" src="~/Assets/coth/nocoth.png" alt="Brak okładki" />
+  }
+  else
+  {
+   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="Okładka @Model.Magazine.Name nr @Model.CoverSignature"/>
+  }
+ </div>
+ 
+ <div class="col-md-8">
+
+  <a class="btn btn-primary" target="_blank" href="@Model.Url">
+   Czytaj na @(new Uri(Model.Url).Host)
+  </a>
+
+  <dl>
+
+   <dt>Data publikacji</dt>
+   <dd>@Model.PublicationDate.ToString("d MMMM yyyy")</dd>
+
+   <dt>Liczba stron</dt>
+   <dd>@Model.PageCount</dd>
+
+   <dt>Łączna liczba wyrazów</dt>
+   <dd>@Model.Articles.Sum(a => a.WordCount).ToString("N0")</dd>
+
+   <dt>Autorzy okładki</dt>
+   <dd>
+    @foreach (var author in Model.CoverAuthors)
+    {
+     <a href="#">@author.Name</a>
+    }
+   </dd>
+
+   <dt>Stan archiwizacji</dt>
+   <dd>
+    @if (Model.IsArchived)
+    {
+     <span class="badge badge-success">Zatwierdzony</span>
+    }
+    else if (Model.Articles.Count > 0)
+    {
+     <span class="badge badge-warning">W trakcie</span>
+    }
+    else
+    {
+     <span class="badge badge-danger">W kolejce</span>
+    }
+   </dd>
+
+  </dl>
+
+  <p class="text-muted">Ostatnia aktualizacja wpisu: @Model.UpdateTime.ToString("d MMMM yyyy")</p>
+ </div>
+ 
+ <div class="row">
+  <div class="col">
+   
+   <h2>Artykuły</h2>
+   
+   <table class="table table-hover">
+
+    <thead>
+    <tr>
+     <th scope="col">Artykuł</th>
+     <th scope="col">Autorzy</th>
+     <th scope="col">Kategoria i tagi</th>
+     <th scope="col">Strona</th>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var article in Model.Articles.OrderBy(article => article.OrdinalNumber))
+    {
+     <tr>
+
+      <td>
+       <p class="font-weight-bold">@article.Title</p>
+       @if (@article.Subject?.Length > 0)
+       {
+        <p class="text-muted">@article.Subject</p>
+       }
+       <p class="small">@article.Lead</p>
+      </td>
+
+      <td>
+       @foreach (var author in article.Authors)
+       {
+        <a href="#">@author.Name</a>
+       }
+      </td>
+
+      <td>
+       <p>@article.Category.Name</p>
+       <ul class="list-inline small">
+        @foreach (var tag in article.Tags)
+        {
+         <li class="list-inline-item">
+          <a href="#">@tag.Name</a>
+         </li>
+        }
+       </ul>
+      </td>
+
+      <td>@article.Page</td>
+
+     </tr>
+    }
+    </tbody>
+
+   </table>
+
+  </div>
+ </div>
+
 </div>

@@ -34,7 +34,7 @@
 
    <div class="col text-center">
     <h4>Wyrazów</h4>
-    <p>@Model.SelectMany(issue => issue.Articles).Sum(article => article.WordCount)</p>
+    <p>@Model.SelectMany(issue => issue.Articles).Sum(article => article.WordCount).ToString("N0")</p>
    </div>
 
   </div>
@@ -61,7 +61,7 @@
      <b>@magazine.Key.Name:</b>
      @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
      {
-      <a href="@issue.Url" class="btn btn-sm btn-@(issue.IsArchived ? "success" : issue.Articles.Count > 0 ? "warning" : "danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
+      <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
      }
     </p>
    }

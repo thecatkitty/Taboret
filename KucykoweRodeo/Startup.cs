@@ -6,10 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using KucykoweRodeo.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 namespace KucykoweRodeo
 {
@@ -28,6 +31,12 @@ namespace KucykoweRodeo
             services.AddDbContext<ArchiveContext>(options => options.UseSqlite("Data Source=rodeo.sqlite3"));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRazorPages();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("pl-PL");
+                options.SupportedCultures = new List<CultureInfo> { new("pl-PL") };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +54,12 @@ namespace KucykoweRodeo
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "assets")),
+                RequestPath = "/Assets"
+            });
 
             app.UseRouting();
 
