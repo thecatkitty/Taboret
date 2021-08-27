@@ -7,6 +7,13 @@
  Layout = "_Layout";
 }
 
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Wydania</li>
+ </ol>
+</nav>
+
 <h1>Wydania</h1>
 
 <div class="row">
@@ -43,8 +50,8 @@
 </div>
 
 @foreach (var year in Model
- .OrderBy(issue => issue.PublicationDate.Year)
- .GroupBy(issue => issue.PublicationDate.Year))
+.OrderBy(issue => issue.PublicationDate.Year)
+.GroupBy(issue => issue.PublicationDate.Year))
 {
  <div class="row">
 
@@ -54,8 +61,8 @@
 
   <div class="col">
    @foreach (var magazine in year
-    .OrderBy(issue => issue.Magazine.Name)
-    .GroupBy(issue => issue.Magazine))
+   .OrderBy(issue => issue.Magazine.Name)
+   .GroupBy(issue => issue.Magazine))
    {
     <p>
      <b>@magazine.Key.Name:</b>

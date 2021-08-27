@@ -37,6 +37,15 @@ namespace KucykoweRodeo.Controllers
             }
 
             var author = await _context.Authors
+                .Include(a => a.Articles)
+                .ThenInclude(article => article.Issue)
+                .ThenInclude(issue => issue.Magazine)
+                .Include(a => a.Articles)
+                .ThenInclude(article => article.Category)
+                .Include(a => a.Articles)
+                .ThenInclude(article => article.Tags)
+                .Include(a => a.Covers)
+                .ThenInclude(cover => cover.Magazine)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (author == null)
             {
@@ -46,6 +55,7 @@ namespace KucykoweRodeo.Controllers
             return View(author);
         }
 
+#if false
         // GET: Authors/Create
         public IActionResult Create()
         {
@@ -152,5 +162,6 @@ namespace KucykoweRodeo.Controllers
         {
             return _context.Authors.Any(e => e.Id == id);
         }
+#endif
     }
 }

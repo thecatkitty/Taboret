@@ -62,21 +62,9 @@ namespace KucykoweRodeo.Controllers
             var viewerHost = new Uri(issue.Url).Host;
             ViewData["IssueViewer"] = viewerHost switch
             {
-                "issuu.com" => new PublisherHandler()
-                {
-                    Name = "Issuu",
-                    GetPageUrl = article => $"{article.Issue.Url}/{article.Page}"
-                },
-                "newsstand.joomag.com" => new PublisherHandler()
-                {
-                    Name = "Newsstand",
-                    GetPageUrl = article => $"{article.Issue.Url}/p{article.Page}"
-                },
-                _ => new PublisherHandler()
-                {
-                    Name = viewerHost,
-                    GetPageUrl = article => article.Issue.Url
-                }
+                "issuu.com" => PublisherHandler.Issuu,
+                "newsstand.joomag.com" => PublisherHandler.Newsstand,
+                _ => PublisherHandler.CreateDefaultHandler(viewerHost)
             };
 
             return View(issue);

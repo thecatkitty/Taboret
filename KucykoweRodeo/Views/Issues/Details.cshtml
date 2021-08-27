@@ -4,8 +4,17 @@
 
 @{
  ViewData["Title"] = $"{Model.Magazine.Name} {Model.CoverSignature}";
+ ViewData["ArticleListColumn"] = "page";
  Layout = "_Layout";
 }
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">Wydania</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Model.Magazine.Name @Model.CoverSignature</li>
+ </ol>
+</nav>
 
 <h1>@Model.Magazine.Name @Model.CoverSignature</h1>
 
@@ -18,14 +27,14 @@
   }
   else
   {
-   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="Okładka @Model.Magazine.Name nr @Model.CoverSignature"/>
+   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="Okładka @Model.Magazine.Name nr @Model.CoverSignature" />
   }
  </div>
- 
+
  <div class="col-md-8">
 
   <a class="btn btn-primary" target="_blank" href="@Model.Url">
-   Czytaj na @(((PublisherHandler)ViewData["IssueViewer"]).Name)
+   Czytaj na @PublisherHandler.GetFromUrl(@Model.Url).Name
   </a>
 
   <dl>
@@ -43,7 +52,7 @@
    <dd>
     @foreach (var author in Model.CoverAuthors)
     {
-     <a href="#">@author.Name</a>
+     <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.Id">@author.Name</a>
     }
    </dd>
 
@@ -67,68 +76,11 @@
 
   <p class="text-muted">Ostatnia aktualizacja wpisu: @Model.UpdateTime.ToString("d MMMM yyyy")</p>
  </div>
- 
- <div class="row">
-  <div class="col">
-   
-   <h2>Artykuły</h2>
-   
-   <table class="table table-hover">
 
-    <thead>
-    <tr>
-     <th scope="col">Artykuł</th>
-     <th scope="col">Autorzy</th>
-     <th scope="col">Kategoria i tagi</th>
-     <th scope="col">Strona</th>
-    </tr>
-    </thead>
-    
-    <tbody>
-    @foreach (var article in Model.Articles.OrderBy(article => article.OrdinalNumber))
-    {
-     <tr>
+</div>
 
-      <td>
-       <p class="font-weight-bold">
-        <a href="@(((PublisherHandler)ViewData["IssueViewer"]).GetPageUrl(article))" target="_blank">@article.Title</a>
-       </p>
-
-       @if (@article.Subject?.Length > 0)
-       {
-        <p class="text-muted">@article.Subject</p>
-       }
-       <p class="small">@article.Lead</p>
-      </td>
-
-      <td>
-       @foreach (var author in article.Authors)
-       {
-        <a href="#">@author.Name</a>
-       }
-      </td>
-
-      <td>
-       <p>@article.Category.Name</p>
-       <ul class="list-inline small">
-        @foreach (var tag in article.Tags)
-        {
-         <li class="list-inline-item">
-          <a href="#">@tag.Name</a>
-         </li>
-        }
-       </ul>
-      </td>
-
-      <td>@article.Page</td>
-
-     </tr>
-    }
-    </tbody>
-
-   </table>
-
-  </div>
+<div class="row">
+ <div class="col">
+  <partial name="_ArticleList" model="Model.Articles" />
  </div>
-
 </div>
