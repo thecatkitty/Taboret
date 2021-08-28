@@ -22,6 +22,7 @@ namespace KucykoweRodeo.Data
             }
 
 
+            Console.Write("Dodawanie magazynów");
             var magazines = new[]
             {
                 new Magazine {Name = "Brohoof", Signature = "BH"},
@@ -34,26 +35,30 @@ namespace KucykoweRodeo.Data
             foreach (var magazine in magazines)
             {
                 context.Magazines.Add(magazine);
+                Console.Write('.');
             }
-
             context.SaveChanges();
+            Console.WriteLine();
 
 
             using var fs = new FileStream("Data/dane.xlsx", FileMode.Open, FileAccess.Read);
             var wb = new XSSFWorkbook(fs);
 
+            Console.Write("Dodawanie wydań");
             var sheet = wb.GetSheet("issues");
-
             for (var i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
             {
                 var row = sheet.GetRow(i);
                 if (row == null) continue;
                 if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
                 context.Issues.Add(GetIssueFromRow(row, context));
+                Console.Write('.');
             }
             context.SaveChanges();
+            Console.WriteLine();
 
 
+            Console.Write("Dodawanie artykułów");
             sheet = wb.GetSheet("articles");
             for (var i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
             {
@@ -61,8 +66,10 @@ namespace KucykoweRodeo.Data
                 if (row == null) continue;
                 if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
                 context.Articles.Add(GetArticleFromRow(row, context));
+                Console.Write('.');
             }
             context.SaveChanges();
+            Console.WriteLine();
         }
 
         private static Issue GetIssueFromRow(IRow row, ArchiveContext context)

@@ -45,13 +45,22 @@
      @foreach (var tag in article.Tags)
      {
       <li class="list-inline-item">
-       <a href="#">@tag.Name</a>
+       <a asp-controller="Tags" asp-action="Details" asp-route-id="@tag.Id">@tag.Name</a>
       </li>
      }
     </ul>
    </td>
-
-   <td>@((string)ViewData["ArticleListColumn"] == "page" ? article.Page : $"{article.Issue.Magazine.Name} {article.Issue.CoverSignature}")</td>
+   
+   <td>
+    @if ((string)ViewData["ArticleListColumn"] == "page")
+    {
+     @article.Page
+    }
+    else
+    {
+     <a asp-controller="Issues" asp-action="Details" asp-route-id="@article.IssueSignature">@article.Issue.Magazine.Name @article.Issue.CoverSignature</a>
+    }
+   </td>
 
   </tr>
  }

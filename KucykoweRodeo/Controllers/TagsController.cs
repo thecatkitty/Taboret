@@ -10,25 +10,24 @@ using KucykoweRodeo.Models;
 
 namespace KucykoweRodeo.Controllers
 {
-    public class AuthorsController : Controller
+    public class TagsController : Controller
     {
         private readonly ArchiveContext _context;
 
-        public AuthorsController(ArchiveContext context)
+        public TagsController(ArchiveContext context)
         {
             _context = context;
         }
 
-        // GET: Authors
+        // GET: Tags
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Authors
-                .Include(a => a.Articles)
-                .Include(a => a.Covers)
+            return View(await _context.Tags
+                .Include(t => t.Articles)
                 .ToListAsync());
         }
 
-        // GET: Authors/Details/5
+        // GET: Tags/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,8 +35,8 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Authors
-                .Include(a => a.Articles)
+            var tag = await _context.Tags
+                .Include(t => t.Articles)
                 .ThenInclude(article => article.Issue)
                 .ThenInclude(issue => issue.Magazine)
                 .Include(a => a.Articles)
@@ -46,41 +45,40 @@ namespace KucykoweRodeo.Controllers
                 .ThenInclude(article => article.Category)
                 .Include(a => a.Articles)
                 .ThenInclude(article => article.Tags)
-                .Include(a => a.Covers)
-                .ThenInclude(cover => cover.Magazine)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            ViewData["ArticleListColumn"] = "issue";
+            return View(tag);
         }
 
 #if false
-        // GET: Authors/Create
+        // GET: Tags/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Authors/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Author author)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(author);
+                _context.Add(tag);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return View(tag);
         }
 
-        // GET: Authors/Edit/5
+        // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,22 +86,22 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            return View(author);
+            return View(tag);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Author author)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Tag tag)
         {
-            if (id != author.Id)
+            if (id != tag.Id)
             {
                 return NotFound();
             }
@@ -112,12 +110,12 @@ namespace KucykoweRodeo.Controllers
             {
                 try
                 {
-                    _context.Update(author);
+                    _context.Update(tag);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorExists(author.Id))
+                    if (!TagExists(tag.Id))
                     {
                         return NotFound();
                     }
@@ -128,10 +126,10 @@ namespace KucykoweRodeo.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return View(tag);
         }
 
-        // GET: Authors/Delete/5
+        // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,30 +137,30 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Authors
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            return View(tag);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            _context.Authors.Remove(author);
+            var tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorExists(int id)
+        private bool TagExists(int id)
         {
-            return _context.Authors.Any(e => e.Id == id);
+            return _context.Tags.Any(e => e.Id == id);
         }
 #endif
     }
