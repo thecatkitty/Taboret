@@ -16,7 +16,7 @@
  </thead>
     
  <tbody>
- @foreach (var article in Model.OrderBy(article => article.OrdinalNumber))
+ @foreach (var article in Model.OrderBy(article => article.Issue.PublicationDate).ThenBy(article => article.OrdinalNumber))
  {
   <tr>
 
@@ -40,7 +40,9 @@
    </td>
 
    <td>
-    <p>@article.Category.Name</p>
+    <p>
+     <a asp-controller="Categories" asp-action="Details" asp-route-id="@article.CategoryId">@article.Category.Name</a>
+    </p>
     <ul class="list-inline small">
      @foreach (var tag in article.Tags)
      {

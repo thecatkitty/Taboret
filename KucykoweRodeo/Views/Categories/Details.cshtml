@@ -1,0 +1,23 @@
+﻿@model KucykoweRodeo.Models.Category
+
+@{
+ ViewData["Title"] = $"{Model.Name}";
+ Layout = "_Layout";
+}
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">Kategorie</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+ </ol>
+</nav>
+
+<h1>Artykuły w kategorii „@Model.Name”</h1>
+
+
+<div class="row">
+ <div class="col">
+  <partial name="_ArticleList" model="Model.Articles" />
+ </div>
+</div>
