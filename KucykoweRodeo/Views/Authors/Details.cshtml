@@ -2,8 +2,9 @@
 
 @{
  ViewData["Title"] = Model.Name;
+ ViewData["Description"] = $"Autor - {Model.Name}";
  ViewData["ArticleListColumn"] = "issue";
- Layout = "~/Views/Shared/_Layout.cshtml";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">

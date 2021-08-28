@@ -2,7 +2,8 @@
 
 @{
  ViewData["Title"] = $"{Model.Name}";
- Layout = "_Layout";
+ ViewData["Description"] = $"Kategoria - {Model.Name}";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">

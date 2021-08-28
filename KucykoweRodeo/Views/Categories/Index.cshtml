@@ -2,7 +2,8 @@
 
 @{
  ViewData["Title"] = "Kategorie";
- Layout = "_Layout";
+ ViewData["Description"] = "Lista kategoryj";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
@@ -18,15 +19,15 @@
 
  <div class="col">
 
-  <ul class="list-unstyled">
+  <div class="list-group">
    @foreach (var category in Model.OrderBy(category => category.Name))
    {
-    <li>
-     <a asp-action="Details" asp-route-id="@category.Id">@category.Name</a>
+    <a class="list-group-item list-group-item-action" asp-action="Details" asp-route-id="@category.Id">
+     @category.Name
      <span class="text-muted">(@category.Articles.Count)</span>
-    </li>
+    </a>
    }
-  </ul>
+  </div>
 
  </div>
 

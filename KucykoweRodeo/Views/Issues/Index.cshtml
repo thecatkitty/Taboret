@@ -3,7 +3,8 @@
 
 @{
  ViewData["Title"] = "Wydania";
- Layout = "_Layout";
+ ViewData["Description"] = "Lista wydań";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
@@ -14,39 +15,6 @@
 </nav>
 
 <h1>Wydania</h1>
-
-<div class="row">
- <div class="container">
-
-  <div class="row">
-
-   <div class="col text-center">
-    <p>Skatalogowano</p>
-   </div>
-
-  </div>
-
-  <div class="row">
-
-   <div class="col text-center">
-    <h4>Wydań</h4>
-    <p>@Model.Count(issue => issue.IsArchived) z @Model.Count()</p>
-   </div>
-
-   <div class="col text-center">
-    <h4>Artykułów</h4>
-    <p>@Model.SelectMany(issue => issue.Articles).Count()</p>
-   </div>
-
-   <div class="col text-center">
-    <h4>Wyrazów</h4>
-    <p>@Model.SelectMany(issue => issue.Articles).Sum(article => article.WordCount).ToString("N0")</p>
-   </div>
-
-  </div>
-
- </div>
-</div>
 
 @foreach (var year in Model
 .OrderBy(issue => issue.PublicationDate.Year)
@@ -75,9 +43,3 @@
 
  </div>
 }
-
-<!--
-<a asp-action="Edit" asp-route-id="item.Signature">Edit</a>
-<a asp-action="Details" asp-route-id="item.Signature">Details</a>
-<a asp-action="Delete" asp-route-id="item.Signature">Delete</a>
--->

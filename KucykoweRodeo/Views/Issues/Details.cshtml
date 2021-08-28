@@ -3,8 +3,9 @@
 
 @{
  ViewData["Title"] = $"{Model.Magazine.Name} {Model.CoverSignature}";
+ ViewData["Description"] = $"Wydanie - {Model.Magazine.Name} {Model.CoverSignature}";
  ViewData["ArticleListColumn"] = "page";
- Layout = "_Layout";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">

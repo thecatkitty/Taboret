@@ -1,0 +1,61 @@
+﻿@page
+@model IndexModel
+@{
+ ViewData["Title"] = "Strona główna";
+}
+
+<div class="jumbotron" style="background-color: #1848a0">
+ <h1 style="color: #ed892a">Archiwum ET</h1>
+</div>
+
+<div class="row">
+
+ <div class="card-deck">
+
+  <div class="card">
+   <div class="card-body">
+    <h5 class="card-title">Wydania</h5>
+    <p class="card-text">
+     Skatalogowano @Model.Context.Issues.Count(issue => issue.IsArchived)
+     z @Model.Context.Issues.Count() wydań.
+     Stanowi to @Model.Context.Articles.Count() artykułów składających się
+     z @Model.Context.Articles.Sum(article => article.WordCount).ToString("N0") wyrazów.
+    </p>
+    <a href="/Issues" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card">
+   <div class="card-body">
+    <h5 class="card-title">Autorzy</h5>
+    <p class="card-text">
+     Liczba autorów skatalogowanych artykułów i okładek wynosi @Model.Context.Authors.Count().
+    </p>
+    <a href="/Authors" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card">
+   <div class="card-body">
+    <h5 class="card-title">Kategorie</h5>
+    <p class="card-text">
+     Obecnie artykuły umieszczone są w @Model.Context.Categories.Count() kategoriach.
+    </p>
+    <a href="/Categories" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card">
+   <div class="card-body">
+    <h5 class="card-title">Tagi</h5>
+    <p class="card-text">
+     Każdy tag odpowiada jakiemuś pojęciu istotnemu z perspektywy oznaczonych nim artykułów.
+     Jest ich obecnie @Model.Context.Tags.Count().
+    </p>
+    <a href="/Tags" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+ </div>
+
+</div>

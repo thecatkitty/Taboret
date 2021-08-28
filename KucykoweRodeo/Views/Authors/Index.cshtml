@@ -3,7 +3,8 @@
 
 @{
  ViewData["Title"] = "Lista autorów";
- Layout = "_Layout";
+ ViewData["Description"] = $"Lista autorów";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
 
  decimal maxWordCount = Model.Select(a => a.Articles.Sum(b => b.WordCount)).Max();
 }
