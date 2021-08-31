@@ -19,21 +19,53 @@ $(function () {
     })
     .autocomplete({
       minLength: 0,
-      source: "/Search/SuggestTags",
+      source: function (request, response) {
+        $.ajax({
+          url: "/Search/Suggest",
+          data: { "query": request.term },
+          dataType: "json",
+          success: function (data) {
+            response(
+              data.tags.map(function (tag) {
+                return {
+                  "caption": tag,
+                  "value": tag
+                }
+              })
+              .concat(data.categories.map(function (category) {
+                return {
+                  "caption": "Kategoria: " + category.name,
+                  "value": "c:" + category.id
+                }
+              }))
+              .concat(data.authors.map(function (author) {
+                return {
+                  "caption": "Autor: " + author.name,
+                  "value": "a:" + author.id
+                }
+              })));
+          }
+        });
+      },
       focus: function () {
         // prevent value inserted on focus
         return false;
       },
       select: function (event, ui) {
-        var terms = split(this.value);
+        var query = split(this.value);
         // remove the current input
-        terms.pop();
+        query.pop();
         // add the selected item
-        terms.push(ui.item.value);
+        query.push(ui.item.value);
         // add placeholder to get the comma-and-space at the end
-        terms.push("");
-        this.value = terms.join(", ");
+        query.push("");
+        this.value = query.join(", ");
         return false;
       }
-    });
+    })
+    .autocomplete("instance")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<div>" + item.caption + "</div>")
+        .appendTo(ul);
+    };
 });

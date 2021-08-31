@@ -6,7 +6,7 @@
   {
    <div class="form-row align-items-center">
     <div class="col">
-     <input type="text" class="form-control" name="query" placeholder="Wpisz tagi...">
+     <input type="text" class="form-control" name="query" value="@(ViewData["SearchQuery"] ?? "")" placeholder="Wprowadź frazę wyszukiwania...">
     </div>
    
     <div class="col-auto">
