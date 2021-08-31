@@ -23,8 +23,11 @@
   <ul class="list-inline small text-justify">
    @foreach (var tag in Model.OrderByDescending(tag => tag.Articles.Count))
    {
-    <li class="list-inline-item">
-     <a asp-action="Details" asp-route-id="@tag.Id" style="font-size: @(((Math.Log10(tag.Articles.Count) + 1) * 100).ToString("N2", CultureInfo.InvariantCulture))%">@tag.Name</a>
+    <li class="list-inline-item border border-primary rounded mt-1 p-1">
+     @{
+      var textSize = Math.Max(1, Math.Log10(tag.Articles.Count)) * 100;
+     }
+     <a asp-action="Details" asp-route-id="@tag.Id" style="font-size: @(textSize.ToString("N2", CultureInfo.InvariantCulture))%">@tag.Name</a>
      <span class="text-muted">@tag.Articles.Count</span>
     </li>
    }

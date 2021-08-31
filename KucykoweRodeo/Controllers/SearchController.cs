@@ -23,9 +23,39 @@ namespace KucykoweRodeo.Controllers
         {
             _context = context;
         }
-
-        [HttpPost]
+        
         public IActionResult Index(string query)
+        {
+            return View(GetArticlesFromQuery(query).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult SuggestTags(string term)
+        {
+            term = (term ?? "").ToLower();
+
+            var lastComma = term.LastIndexOf(',');
+            var rawTags = term.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            var tags = lastComma != -1
+                ? GetArticlesFromQuery(term[..lastComma])
+                    .SelectMany(article => article.Tags)
+                    .Where(tag => tag.Name.ToLower().Contains(term[(lastComma + 1)..].Trim()))
+                    .Where(tag => !rawTags.Contains(tag.Name.ToLower()))
+                    .Distinct()
+                : _context.Tags
+                    .Include(tag => tag.Articles)
+                    .Where(tag => tag.Name.ToLower()
+                        .Contains(term));
+
+            return Json(tags
+                .OrderByDescending(tag => tag.Articles.Count)
+                .Take(20)
+                .Select(tag => tag.Name)
+                .ToList());
+        }
+
+        private IEnumerable<Article> GetArticlesFromQuery(string query)
         {
             IEnumerable<Article> articles = _context.Articles
                 .OrderBy(article => article.Issue.PublicationDate)
@@ -37,6 +67,7 @@ namespace KucykoweRodeo.Controllers
                 .Include(article => article.Tags);
             var features = query
                 .Split(',', StringSplitOptions.TrimEntries)
+                .Where(feature => feature.Length > 0)
                 .Select(feature => feature.ToLower())
                 .Distinct()
                 .ToLookup(feature => feature.Split(":")[0] switch
@@ -82,7 +113,7 @@ namespace KucykoweRodeo.Controllers
                         .Contains(tag)));
             }
 
-            return View(articles.ToList());
+            return articles;
         }
     }
 }
