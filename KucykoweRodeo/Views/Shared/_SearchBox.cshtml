@@ -1,18 +1,12 @@
-﻿<div class="row">
- <div class="col">
-  <h2>Wyszukiwarka</h2>
-  
-  @using (Html.BeginForm("Index", "Search", FormMethod.Get))
-  {
-   <div class="form-row align-items-center">
-    <div class="col">
-     <input type="text" class="form-control" name="query" value="@(ViewData["SearchQuery"] ?? "")" placeholder="Wprowadź frazę wyszukiwania...">
-    </div>
+﻿@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+ <div class="form-row align-items-center">
+  <div class="col">
+   <input type="text" class="form-control" name="query" value="@(ViewData["SearchQuery"] ?? "")" placeholder="Wprowadź frazę wyszukiwania...">
+  </div>
    
-    <div class="col-auto">
-     <button type="submit" class="btn btn-primary">Szukaj</button>
-    </div>
-   </div>
-  }
+  <div class="col-auto">
+   <button type="submit" class="btn btn-primary">Szukaj</button>
+  </div>
  </div>
-</div>
+}
