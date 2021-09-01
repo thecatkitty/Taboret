@@ -26,24 +26,18 @@ $(function () {
           dataType: "json",
           success: function (data) {
             response(
-              data.tags.map(function (tag) {
+              data.features.map(function (feature) {
+                var prefixCaptions = {
+                  "a:": "Autor: ",
+                  "c:": "Kategoria: "
+                };
+                var prefix = feature.value.substring(0, 2);
+
                 return {
-                  "caption": tag,
-                  "value": tag
+                  "caption": (prefixCaptions[prefix] || "") + feature.caption,
+                  "value": feature.value
                 }
-              })
-              .concat(data.categories.map(function (category) {
-                return {
-                  "caption": "Kategoria: " + category.name,
-                  "value": "c:" + category.id
-                }
-              }))
-              .concat(data.authors.map(function (author) {
-                return {
-                  "caption": "Autor: " + author.name,
-                  "value": "a:" + author.id
-                }
-              })));
+              }));
           }
         });
       },

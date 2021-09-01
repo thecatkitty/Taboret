@@ -15,6 +15,13 @@ namespace KucykoweRodeo.Controllers
         Author, Category, Issue, Tag
     };
 
+    class FeatureSuggestion
+    {
+        public string Caption { get; set; }
+        public string Value { get; set; }
+        public int Count { get; set; }
+    }
+
     public class SearchController : Controller
     {
         private readonly ArchiveContext _context;
@@ -37,52 +44,42 @@ namespace KucykoweRodeo.Controllers
 
             if (query.Length == 0)
             {
-                return Json(GetDictionaryForJson(
-                    _context.Authors
-                        .Include(author => author.Articles),
-                    _context.Categories
-                        .Include(category => category.Articles),
-                    _context.Tags
-                        .Include(tag => tag.Articles)));
+                return Json(GetDictionaryForJson(GetFeatures()));
             }
 
-
             var lastComma = query.LastIndexOf(',');
-            var rawTags = query.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            var rawTags = query.Split(',', StringSplitOptions.TrimEntries);
 
-            var authors = lastComma != -1
-                ? GetArticlesFromQuery(query[..lastComma])
-                    .SelectMany(article => article.Authors)
+            if (lastComma == -1)
+            {
+                return Json(GetDictionaryForJson(GetFeatures()
+                            .Where(feature => feature.ComparableName.Contains(rawTags[0]))));
+            }
+
+            var articles = GetArticlesFromQuery(query[..lastComma]).ToList();
+            var term = rawTags.Last();
+
+            var features = articles
+                .SelectMany(article => article.Authors).AsEnumerable<Feature>()
+                .Concat(articles.SelectMany(article => article.Tags))
+                .Distinct()
+                .Where(feature => !rawTags.Contains(GetPrefixedValue(feature)));
+
+            if (term != "")
+            {
+                features = features
+                    .Where(feature => feature.ComparableName.Contains(term));
+            }
+
+            if (!rawTags.Any(tag => tag.StartsWith("c:")))
+            {
+                features = features.Concat(articles
+                    .Select(article => article.Category)
                     .Distinct()
-                    .Where(author => author.Name.ToLower().Contains(rawTags.Last()))
-                    .Where(author => !rawTags.Contains("a:" + author.Name.ToLower()))
-                : _context.Authors
-                    .Include(author => author.Articles)
-                    .Where(author => author.Name.ToLower().Contains(rawTags.Last()));
+                    .Where(category => category.ComparableName.Contains(term)));
+            }
 
-            var categories = lastComma != -1
-                ? rawTags.Any(tag => tag.StartsWith("c:"))
-                    ? new List<Category>()
-                    : GetArticlesFromQuery(query[..lastComma])
-                        .Select(article => article.Category)
-                        .Distinct()
-                        .Where(category => category.Name.ToLower().Contains(rawTags.Last()))
-                : _context.Categories
-                    .Include(category => category.Articles)
-                    .Where(category => category.Name.ToLower().Contains(rawTags.Last()));
-
-            var tags = lastComma != -1
-                ? GetArticlesFromQuery(query[..lastComma])
-                    .SelectMany(article => article.Tags)
-                    .Where(tag => tag.Name.ToLower().Contains(rawTags.Last()))
-                    .Where(tag => !rawTags.Contains(tag.Name.ToLower()))
-                    .Distinct()
-                : _context.Tags
-                    .Include(tag => tag.Articles)
-                    .Where(tag => tag.Name.ToLower()
-                        .Contains(query));
-            
-            return Json(GetDictionaryForJson(authors, categories, tags));
+            return Json(GetDictionaryForJson(features));
         }
 
         private IEnumerable<Article> GetArticlesFromQuery(string query)
@@ -96,9 +93,8 @@ namespace KucykoweRodeo.Controllers
                 .Include(article => article.Authors)
                 .Include(article => article.Tags);
             var features = query
-                .Split(',', StringSplitOptions.TrimEntries)
+                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                 .Where(feature => feature.Length > 0)
-                .Select(feature => feature.ToLower())
                 .Distinct()
                 .ToLookup(feature => feature.Split(":")[0] switch
                 {
@@ -110,27 +106,29 @@ namespace KucykoweRodeo.Controllers
 
             if (features.Contains(FeatureType.Author))
             {
-                var authorIds = features[FeatureType.Author]
-                    .Select(feature => int.Parse(feature[2..]));
+                var authors = features[FeatureType.Author]
+                    .Select(feature => feature[2..]);
                 articles = articles.Where(article =>
-                    authorIds.All(id => article.Authors
-                        .Select(author => author.Id)
-                        .Contains(id)));
+                    authors.All(name => article.Authors
+                        .Select(author => author.ComparableName)
+                        .Contains(name)));
             }
 
             if (features.Contains(FeatureType.Category))
             {
-                var categoryId = features[FeatureType.Category]
-                    .Select(feature => int.Parse(feature[2..]))
+                var category = features[FeatureType.Category]
+                    .Select(feature => feature[2..])
                     .Last();
-                articles = articles.Where(article => article.CategoryId == categoryId);
+                articles = articles
+                    .Where(article => article.Category.ComparableName == category);
             }
 
             if (features.Contains(FeatureType.Issue))
             {
                 var issueSignature = features[FeatureType.Issue]
                     .Select(feature => feature[2..])
-                    .Last();
+                    .Last()
+                    .ToUpper();
                 articles = articles.Where(article => article.IssueSignature == issueSignature);
             }
 
@@ -139,46 +137,41 @@ namespace KucykoweRodeo.Controllers
                 var tags = features[FeatureType.Tag];
                 articles = articles.Where(article =>
                     tags.All(tag => article.Tags
-                        .Select(articleTag => articleTag.Name.ToLower())
+                        .Select(articleTag => articleTag.ComparableName)
                         .Contains(tag)));
             }
 
             return articles;
         }
 
-        private static Dictionary<string, object> GetDictionaryForJson(IEnumerable<Author> authors, IEnumerable<Category> categories, IEnumerable<Tag> tags)
+        private IEnumerable<Feature> GetFeatures() =>
+            _context.Authors
+                .Include(author => author.Articles).AsEnumerable<Feature>()
+                .Concat(_context.Categories
+                    .Include(category => category.Articles))
+                .Concat(_context.Tags
+                    .Include(tag => tag.Articles));
+
+        private static string GetPrefixedValue(Feature feature) => feature switch
+        {
+            Author => $"a:{feature.ComparableName}",
+            Category => $"c:{feature.ComparableName}",
+            _ => feature.ComparableName
+        };
+
+        private static Dictionary<string, object> GetDictionaryForJson(IEnumerable<Feature> features)
         {
             return new Dictionary<string, object>
             {
                 {
-                    "tags",
-                    tags
-                        .OrderByDescending(tag => tag.Articles.Count)
-                        .Take(8)
-                        .Select(tag => tag.Name)
-                        .ToList()
-                },
-                {
-                    "categories",
-                    categories
-                        .OrderByDescending(category => category.Articles.Count)
-                        .Take(8)
-                        .Select(category => new Dictionary<string, object>
+                    "features",
+                    features
+                        .OrderByDescending(feature => feature.Articles.Count)
+                        .Take(20)
+                        .Select(feature => new Dictionary<string, string>
                         {
-                            { "id", category.Id },
-                            { "name", category.Name }
-                        })
-                        .ToList()
-                },
-                {
-                    "authors",
-                    authors
-                        .OrderByDescending(category => category.Articles.Count)
-                        .Take(8)
-                        .Select(author => new Dictionary<string, object>
-                        {
-                            { "id", author.Id },
-                            { "name", author.Name }
+                            { "caption", feature.Name },
+                            { "value", GetPrefixedValue(feature) },
                         })
                         .ToList()
                 }
