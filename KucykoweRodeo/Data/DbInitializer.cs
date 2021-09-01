@@ -135,12 +135,18 @@ namespace KucykoweRodeo.Data
             }
 
             var category = row.GetCell(5).ToString();
-            if (!context.Categories.Any(c => c.Name == category))
+            var comparableName = category?.ToLower();
+            if (!context.Categories.Any(c => c.ComparableName == comparableName))
             {
-                context.Categories.Add(new Category{Name = category});
+                context.Categories.Add(new Category
+                {
+                    Name = category,
+                    ComparableName = comparableName
+                });
                 context.SaveChanges();
             }
-            article.Category = context.Categories.First(c => c.Name == category);
+            article.Category = context.Categories
+                .First(c => c.ComparableName == comparableName);
 
             article.Tags ??= new HashSet<Tag>();
 
@@ -158,19 +164,25 @@ namespace KucykoweRodeo.Data
         private static IEnumerable<Author> GetAuthorsFromCell(ICell cell, ArchiveContext context)
         {
             var authors = new HashSet<Author>();
-            if (cell == null || cell.CellType != CellType.String)
+            if (cell is not { CellType: CellType.String })
             {
                 return authors;
             }
 
             foreach (var name in cell.StringCellValue.Split(", "))
             {
-                if (!context.Authors.Any(a => a.Name == name))
+                var comparableName = name.ToLower();
+                if (!context.Authors.Any(a => a.ComparableName == comparableName))
                 {
-                    context.Authors.Add(new Author { Name = name });
+                    context.Authors.Add(new Author
+                    {
+                        Name = name,
+                        ComparableName = comparableName
+                    });
                     context.SaveChanges();
                 }
-                authors.Add(context.Authors.First(a => a.Name == name));
+                authors.Add(context.Authors
+                    .First(a => a.ComparableName == comparableName));
             }
 
             return authors;
@@ -179,19 +191,25 @@ namespace KucykoweRodeo.Data
         private static IEnumerable<Tag> GetTagsFromCell(ICell cell, ArchiveContext context)
         {
             var tags = new HashSet<Tag>();
-            if (cell == null || cell.CellType != CellType.String)
+            if (cell is not { CellType: CellType.String })
             {
                 return tags;
             }
 
             foreach (var name in cell.StringCellValue.Split(", "))
             {
-                if (!context.Tags.Any(a => a.Name == name))
+                var comparableName = name.ToLower();
+                if (!context.Tags.Any(a => a.ComparableName == comparableName))
                 {
-                    context.Tags.Add(new Tag { Name = name });
+                    context.Tags.Add(new Tag
+                    {
+                        Name = name,
+                        ComparableName = comparableName
+                    });
                     context.SaveChanges();
                 }
-                tags.Add(context.Tags.First(a => a.Name == name));
+                tags.Add(context.Tags
+                    .First(a => a.ComparableName == comparableName));
             }
 
             return tags;
