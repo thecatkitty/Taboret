@@ -3,7 +3,7 @@
 
 @{
  ViewData["Title"] = "Lista autorów";
- ViewData["Description"] = $"Lista autorów";
+ ViewData["Description"] = "Lista autorów";
  Layout = "~/Pages/Shared/_Layout.cshtml";
 
  decimal maxWordCount = Model.Select(a => a.Articles.Sum(b => b.WordCount)).Max();
@@ -36,7 +36,7 @@
       <td>
        <a asp-action="Details" asp-route-id="@author.Id">@author.Name</a>
       </td>
-      <td>@author.Articles.Count()</td>
+      <td>@author.Articles.Count</td>
       <td>
        <div class="progress">
         @{

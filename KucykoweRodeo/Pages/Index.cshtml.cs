@@ -7,15 +7,14 @@ namespace KucykoweRodeo.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ArchiveContext _context;
 
         public IndexModel(ILogger<IndexModel> logger, ArchiveContext context)
         {
             _logger = logger;
-            _context = context;
+            Context = context;
         }
 
-        public ArchiveContext Context => _context;
+        public ArchiveContext Context { get; }
 
         public void OnGet()
         {

@@ -9,6 +9,7 @@ namespace KucykoweRodeo.Models
         public string Signature { get; set; }
         public string Name { get; set; }
 
+        // ReSharper disable once UnusedMember.Global
         public ICollection<Issue> Issues { get; set; }
     }
 }

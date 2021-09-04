@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace KucykoweRodeo.Models
+﻿namespace KucykoweRodeo.Models
 {
     public class Tag : Feature
     {

@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using KucykoweRodeo.Data;
 using KucykoweRodeo.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace KucykoweRodeo.Controllers
@@ -14,13 +12,6 @@ namespace KucykoweRodeo.Controllers
     {
         Author, Category, Issue, Tag
     };
-
-    class FeatureSuggestion
-    {
-        public string Caption { get; set; }
-        public string Value { get; set; }
-        public int Count { get; set; }
-    }
 
     public class SearchController : Controller
     {

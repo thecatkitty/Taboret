@@ -5,10 +5,6 @@ $(function () {
     return val.split(/,\s*/);
   }
 
-  function extractLast(term) {
-    return split(term).pop();
-  }
-
   $("input[name=query]")
     // don't navigate away from the field on tab when selecting an item
     .on("keydown", function (event) {
