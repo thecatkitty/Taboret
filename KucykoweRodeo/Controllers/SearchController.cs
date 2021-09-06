@@ -21,7 +21,7 @@ namespace KucykoweRodeo.Controllers
         {
             _context = context;
         }
-        
+
         public IActionResult Index(string query)
         {
             ViewData["SearchQuery"] = query;
@@ -41,10 +41,16 @@ namespace KucykoweRodeo.Controllers
             var lastComma = query.LastIndexOf(',');
             var rawTags = query.Split(',', StringSplitOptions.TrimEntries);
 
+            var titleMatches = _context.Articles
+                .Include(article => article.Authors)
+                .Include(article => article.Issue)
+                .ThenInclude(issue => issue.Magazine)
+                .Where(article => article.Title.ToLower().Contains(query) || article.Subject.ToLower().Contains(query));
+
             if (lastComma == -1)
             {
                 return Json(GetDictionaryForJson(GetFeatures()
-                            .Where(feature => feature.ComparableName.Contains(rawTags[0]))));
+                            .Where(feature => feature.ComparableName.Contains(rawTags[0])), titleMatches));
             }
 
             var articles = GetArticlesFromQuery(query[..lastComma]).ToList();
@@ -70,7 +76,7 @@ namespace KucykoweRodeo.Controllers
                     .Where(category => category.ComparableName.Contains(term)));
             }
 
-            return Json(GetDictionaryForJson(features));
+            return Json(GetDictionaryForJson(features, titleMatches));
         }
 
         private IEnumerable<Article> GetArticlesFromQuery(string query)
@@ -150,7 +156,7 @@ namespace KucykoweRodeo.Controllers
             _ => feature.ComparableName
         };
 
-        private static Dictionary<string, object> GetDictionaryForJson(IEnumerable<Feature> features)
+        private static Dictionary<string, object> GetDictionaryForJson(IEnumerable<Feature> features, IEnumerable<Article> articles = null)
         {
             return new Dictionary<string, object>
             {
@@ -165,6 +171,29 @@ namespace KucykoweRodeo.Controllers
                             { "value", GetPrefixedValue(feature) },
                         })
                         .ToList()
+                },
+                {
+                    "articles",
+                    articles == null
+                        ? new List<object>()
+                        : articles
+                            .OrderByDescending(article => article.Issue.PublicationDate)
+                            .ThenBy(article => article.Title)
+                            .Take(20)
+                            .Select(article => new Dictionary<string, object>
+                            {
+                                { "title", article.Title },
+                                { "subject", article.Subject },
+                                {
+                                    "authors",
+                                    article.Authors
+                                        .Select(author => author.Name)
+                                        .ToList()
+                                },
+                                { "issue", $"{article.Issue.Magazine.Name} {article.Issue.CoverSignature}" },
+                                { "url", PublisherHandler.GetFromUrl(article.Issue.Url).GetPageUrl(article) }
+                            })
+                            .ToList()
                 }
             };
         }
