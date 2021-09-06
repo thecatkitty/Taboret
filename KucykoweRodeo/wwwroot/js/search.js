@@ -30,7 +30,8 @@ $(function () {
                 var prefix = feature.value.substring(0, 2);
 
                 return {
-                  "caption": (prefixCaptions[prefix] || "") + feature.caption,
+                  "prefix": prefixCaptions[prefix] || "",
+                  "caption": feature.caption,
                   "value": feature.value
                 }
               }));
@@ -54,8 +55,11 @@ $(function () {
       }
     })
     .autocomplete("instance")._renderItem = function (ul, item) {
+      var div = $("<div>")
+        .append("<span class='text-muted'>" + item.prefix + "</span>")
+        .append("<span>" + item.caption + "</span>");
       return $("<li>")
-        .append("<div>" + item.caption + "</div>")
+        .append(div)
         .appendTo(ul);
     };
 });
