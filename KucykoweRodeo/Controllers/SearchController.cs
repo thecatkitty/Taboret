@@ -179,7 +179,7 @@ namespace KucykoweRodeo.Controllers
                         : articles
                             .OrderByDescending(article => article.Issue.PublicationDate)
                             .ThenBy(article => article.Title)
-                            .Take(20)
+                            .Take(10)
                             .Select(article => new Dictionary<string, object>
                             {
                                 { "title", article.Title },
