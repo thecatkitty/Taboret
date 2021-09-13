@@ -33,7 +33,7 @@ namespace KucykoweRodeo
                     options.Scope.Add("guilds");
                 });
 
-            services.AddDbContext<ArchiveContext>(options => options.UseSqlite("Data Source=rodeo.sqlite3"));
+            services.AddDbContext<ArchiveContext>(options => options.UseSqlite(Configuration["ConnectionStrings:ArchiveContext"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRazorPages();
 
