@@ -52,13 +52,8 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-
-        public IActionResult OnGetAsync()
-        {
-            return RedirectToPage("./Login");
-        }
-
-        public IActionResult OnPost(string provider, string returnUrl = null)
+        
+        public IActionResult OnGet(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
@@ -66,19 +61,19 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
             return new ChallengeResult(provider, properties);
         }
 
-        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> OnGetCallbackAsync(string provider = null, string returnUrl = null, string remoteError = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
+                return RedirectToPage("~/", new {ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information.";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage("~/", new { ReturnUrl = returnUrl });
             }
 
             // Sign in the user with this external login provider if the user already has a login.
@@ -116,7 +111,7 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information during confirmation.";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage("~/", new { ReturnUrl = returnUrl });
             }
 
             if (ModelState.IsValid)
