@@ -81,7 +81,7 @@ namespace KucykoweRodeo.Controllers
 
         private IEnumerable<Article> GetArticlesFromQuery(string query)
         {
-            IEnumerable<Article> articles = _context.Articles
+            IEnumerable<Article> articles = _context.Articles.AsQueryable()
                 .OrderBy(article => article.Issue.PublicationDate)
                 .ThenBy(article => article.OrdinalNumber)
                 .Include(article => article.Category)

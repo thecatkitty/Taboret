@@ -24,6 +24,15 @@ namespace KucykoweRodeo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication()
+                .AddDiscord(options =>
+                {
+                    options.ClientId = Configuration["Discord:ClientId"];
+                    options.ClientSecret = Configuration["Discord:ClientSecret"];
+                    options.Scope.Add("identify");
+                    options.Scope.Add("guilds");
+                });
+
             services.AddDbContext<ArchiveContext>(options => options.UseSqlite("Data Source=rodeo.sqlite3"));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRazorPages();
@@ -60,6 +69,7 @@ namespace KucykoweRodeo
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

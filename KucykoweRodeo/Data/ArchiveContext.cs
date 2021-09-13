@@ -1,9 +1,11 @@
 ﻿using KucykoweRodeo.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KucykoweRodeo.Data
 {
-    public class ArchiveContext : DbContext
+    public class ArchiveContext : IdentityDbContext<IdentityUser>
     {
         public ArchiveContext(DbContextOptions<ArchiveContext> options) : base(options)
         {
@@ -24,6 +26,8 @@ namespace KucykoweRodeo.Data
             modelBuilder.Entity<Author>().ToTable("Author");
             modelBuilder.Entity<Category>().ToTable("Category");
             modelBuilder.Entity<Tag>().ToTable("Tag");
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
