@@ -29,8 +29,8 @@ namespace KucykoweRodeo
                 {
                     options.ClientId = Configuration["Discord:ClientId"];
                     options.ClientSecret = Configuration["Discord:ClientSecret"];
-                    options.Scope.Add("identify");
                     options.Scope.Add("guilds");
+                    options.SaveTokens = true;
                 });
 
             services.AddDbContext<ArchiveContext>(options => options.UseSqlite(Configuration["ConnectionStrings:ArchiveContext"]));
