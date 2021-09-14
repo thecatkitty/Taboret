@@ -13,7 +13,7 @@ namespace KucykoweRodeo.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<Data.ArchiveContext>(options => options.UseSqlite(context.Configuration["ConnectionStrings:ArchiveContext"]));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<Data.ArchiveContext>();
             });
         }

@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Discord;
-using Discord.Rest;
-using Discord.WebSocket;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -65,7 +58,7 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("~/", new {ReturnUrl = returnUrl });
+                return RedirectToPage("~/", new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -73,13 +66,10 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information.";
                 return RedirectToPage("~/", new { ReturnUrl = returnUrl });
             }
-
-            _logger.LogInformation(info.ProviderKey);
-
-            var discord = new DiscordRestClient();
+            
             var accessToken = info.AuthenticationTokens.First(token => token.Name == "access_token");
-
-            await discord.LoginAsync(TokenType.Bearer, accessToken.Value);
+            var discord = await DiscordHelper.GetClientAsync(accessToken.Value);
+            
             var allowedGuild = await discord.GetGuildSummariesAsync()
                 .Flatten()
                 .AnyAsync(guild => guild.Id == ulong.Parse(_configuration["Discord:AllowGuild"]));
@@ -92,6 +82,14 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider,
+                    info.ProviderKey);
+
+                var props = new AuthenticationProperties();
+                props.StoreTokens(info.AuthenticationTokens);
+
+                await _signInManager.SignInAsync(user, props, info.LoginProvider);
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -121,7 +119,7 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
 
             var user = new IdentityUser
             {
-                UserName = info.Principal?.Identity?.Name
+                UserName = info.Principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -132,10 +130,11 @@ namespace KucykoweRodeo.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    await _userManager.ConfirmEmailAsync(user, code); // kek
+                    var props = new AuthenticationProperties();
+                    props.StoreTokens(info.AuthenticationTokens);
+                    props.IsPersistent = false;
 
-                    await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                    await _signInManager.SignInAsync(user, props, info.LoginProvider);
 
                     return LocalRedirect(returnUrl);
                 }
