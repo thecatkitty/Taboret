@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KucykoweRodeo.Data;
 using KucykoweRodeo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -93,6 +94,7 @@ namespace KucykoweRodeo.Controllers
 #endif
 
         // GET: Issues/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -121,6 +123,7 @@ namespace KucykoweRodeo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(string id, [Bind("Signature,PublicationDate,CoverSignature,Url,PageCount,IsArchived")] Issue input, string coverAuthors)
         {
             if (id != input.Signature)
