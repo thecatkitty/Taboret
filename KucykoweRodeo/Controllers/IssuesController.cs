@@ -1,10 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KucykoweRodeo.Data;
+using KucykoweRodeo.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KucykoweRodeo.Controllers
 {
@@ -49,11 +52,7 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var coverPath = "/coth/" + issue.Signature + ".png";
-            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "assets") + coverPath))
-            {
-                ViewData["CoverPath"] = coverPath;
-            }
+            SetCoverPath(issue);
 
             var viewerHost = new Uri(issue.Url).Host;
             ViewData["IssueViewer"] = viewerHost switch
@@ -90,6 +89,7 @@ namespace KucykoweRodeo.Controllers
             ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", issue.MagazineSignature);
             return View(issue);
         }
+#endif
 
         // GET: Issues/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -99,11 +99,16 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var issue = await _context.Issues.FindAsync(id);
+            var issue = await _context.Issues
+                .Include(i => i.Magazine)
+                .FirstAsync(issue => issue.Signature == id);
             if (issue == null)
             {
                 return NotFound();
             }
+
+            SetCoverPath(issue);
+
             ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", issue.MagazineSignature);
             return View(issue);
         }
@@ -113,9 +118,9 @@ namespace KucykoweRodeo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MagazineSignature,Signature,PublicationDate,CoverSignature,Url,PageCount,IsArchived,UpdateTime")] Issue issue)
+        public async Task<IActionResult> Edit(string id, [Bind("Signature,PublicationDate,CoverSignature,Url,PageCount,IsArchived")] Issue input, string coverAuthors)
         {
-            if (id != issue.Signature)
+            if (id != input.Signature)
             {
                 return NotFound();
             }
@@ -124,12 +129,18 @@ namespace KucykoweRodeo.Controllers
             {
                 try
                 {
-                    _context.Update(issue);
+                    var issue = _context.Issues.First(i => i.Signature == id);
+                    issue.PublicationDate = input.PublicationDate;
+                    issue.CoverSignature = input.CoverSignature;
+                    issue.Url = input.Url;
+                    issue.PageCount = input.PageCount;
+                    issue.IsArchived = input.IsArchived;
+                    issue.UpdateTime = DateTime.Now;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IssueExists(issue.Signature))
+                    if (!IssueExists(input.Signature))
                     {
                         return NotFound();
                     }
@@ -138,12 +149,13 @@ namespace KucykoweRodeo.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id });
             }
-            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", issue.MagazineSignature);
-            return View(issue);
+            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", input.MagazineSignature);
+            return View(input);
         }
 
+#if false
         // GET: Issues/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
@@ -173,11 +185,20 @@ namespace KucykoweRodeo.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+#endif
 
         private bool IssueExists(string id)
         {
             return _context.Issues.Any(e => e.Signature == id);
         }
-#endif
+
+        private void SetCoverPath(Issue issue)
+        {
+            var coverPath = "/coth/" + issue.Signature + ".png";
+            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "assets") + coverPath))
+            {
+                ViewData["CoverPath"] = coverPath;
+            }
+        }
     }
 }
