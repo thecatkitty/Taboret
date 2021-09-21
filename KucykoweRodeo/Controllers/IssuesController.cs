@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -101,6 +102,7 @@ namespace KucykoweRodeo.Controllers
 
             var issue = await _context.Issues
                 .Include(i => i.Magazine)
+                .Include(i => i.CoverAuthors)
                 .FirstAsync(issue => issue.Signature == id);
             if (issue == null)
             {
@@ -109,7 +111,8 @@ namespace KucykoweRodeo.Controllers
 
             SetCoverPath(issue);
 
-            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", issue.MagazineSignature);
+            ViewData["CoverAuthors"] = string.Join(", ", issue.CoverAuthors
+                .Select(author => author.Name));
             return View(issue);
         }
 
@@ -129,13 +132,36 @@ namespace KucykoweRodeo.Controllers
             {
                 try
                 {
-                    var issue = _context.Issues.First(i => i.Signature == id);
+                    var issue = _context.Issues
+                        .Include(i => i.CoverAuthors)
+                        .First(i => i.Signature == id);
                     issue.PublicationDate = input.PublicationDate;
                     issue.CoverSignature = input.CoverSignature;
                     issue.Url = input.Url;
                     issue.PageCount = input.PageCount;
                     issue.IsArchived = input.IsArchived;
                     issue.UpdateTime = DateTime.Now;
+
+                    var (authors, unknownAuthors) = GetAuthors(coverAuthors);
+                    var newAuthors = unknownAuthors
+                        .Select(author => new Author
+                        {
+                            Name = author,
+                            ComparableName = author.ToLower()
+                        })
+                        .ToList();
+
+                    _context.Authors.AddRange(newAuthors);
+                    newAuthors.ForEach(author => authors.Add(author));
+
+                    issue.CoverAuthors
+                        .Where(author => !authors.Contains(author))
+                        .ToList()
+                        .ForEach(author => issue.CoverAuthors.Remove(author));
+                    authors
+                        .Where(author => !issue.CoverAuthors.Contains(author))
+                        .ToList()
+                        .ForEach(author => issue.CoverAuthors.Add(author));
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -144,10 +170,8 @@ namespace KucykoweRodeo.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Details), new { id });
             }
@@ -199,6 +223,27 @@ namespace KucykoweRodeo.Controllers
             {
                 ViewData["CoverPath"] = coverPath;
             }
+        }
+
+        private (IList<Author>, IList<string>) GetAuthors(string query)
+        {
+            var names = query.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            var comparableNames = names
+                .Select(name => name.ToLower())
+                .ToList();
+
+            var knowns = _context.Authors
+                .AsQueryable()
+                .Where(author => comparableNames
+                    .Contains(author.ComparableName))
+                .ToList();
+
+            var unknowns = names
+                .Where(name => knowns.All(author => author.ComparableName != name.ToLower()))
+                .ToList();
+
+            return (knowns, unknowns);
         }
     }
 }
