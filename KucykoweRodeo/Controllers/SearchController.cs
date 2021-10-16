@@ -25,6 +25,13 @@ namespace KucykoweRodeo.Controllers
         public IActionResult Index(string query)
         {
             ViewData["SearchQuery"] = query;
+
+            query = (query ?? "").ToLower();
+            if (query.Length == 0)
+            {
+                return Redirect("/");
+            }
+
             return View(GetArticlesFromQuery(query).ToList());
         }
 
@@ -91,7 +98,6 @@ namespace KucykoweRodeo.Controllers
                 .Include(article => article.Tags);
             var features = query
                 .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                .Where(feature => feature.Length > 0)
                 .Distinct()
                 .ToLookup(feature => feature.Split(":")[0] switch
                 {
