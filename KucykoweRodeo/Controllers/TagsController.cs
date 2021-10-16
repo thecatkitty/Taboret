@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KucykoweRodeo.Data;
+using System;
+using System.Collections.Generic;
+using KucykoweRodeo.Models;
 
 namespace KucykoweRodeo.Controllers
 {
@@ -48,6 +52,35 @@ namespace KucykoweRodeo.Controllers
 
             ViewData["ArticleListColumn"] = "issue";
             return View(tag);
+        }
+
+        [HttpGet]
+        public IActionResult Suggest(string query)
+        {
+            query = (query ?? "").ToLower();
+            
+            var rawTags = query.Split(',', StringSplitOptions.TrimEntries);
+            var term = rawTags.Last();
+
+            IQueryable<Tag> tags = _context.Tags
+                .AsQueryable()
+                .OrderByDescending(tag => tag.Articles.Count);
+
+            if (rawTags.Length > 1)
+            {
+                var excluded = rawTags[..^1];
+                tags = tags.Where(tag => !excluded.Contains(tag.ComparableName));
+            }
+
+            if (term.Length != 0)
+            {
+                tags = tags.Where(tag => tag.ComparableName.Contains(rawTags.Last()));
+            }
+
+            return Json(tags
+                .Select(tag => tag.Name)
+                .Take(20)
+                .ToList());
         }
     }
 }
