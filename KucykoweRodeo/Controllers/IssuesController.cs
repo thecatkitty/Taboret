@@ -1,15 +1,15 @@
-﻿using System;
+﻿using KucykoweRodeo.Data;
+using KucykoweRodeo.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using KucykoweRodeo.Data;
-using KucykoweRodeo.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KucykoweRodeo.Controllers
 {
@@ -105,6 +105,9 @@ namespace KucykoweRodeo.Controllers
             var issue = await _context.Issues
                 .Include(i => i.Magazine)
                 .Include(i => i.CoverAuthors)
+                .Include(i => i.Articles).ThenInclude(a => a.Authors)
+                .Include(i => i.Articles).ThenInclude(a => a.Category)
+                .Include(i => i.Articles).ThenInclude(a => a.Tags)
                 .FirstAsync(issue => issue.Signature == id);
             if (issue == null)
             {
@@ -145,17 +148,9 @@ namespace KucykoweRodeo.Controllers
                     issue.IsArchived = input.IsArchived;
                     issue.UpdateTime = DateTime.Now;
 
-                    var (authors, unknownAuthors) = GetAuthors(coverAuthors);
-                    var newAuthors = unknownAuthors
-                        .Select(author => new Author
-                        {
-                            Name = author,
-                            ComparableName = author.ToLower()
-                        })
-                        .ToList();
-
-                    _context.Authors.AddRange(newAuthors);
-                    newAuthors.ForEach(author => authors.Add(author));
+                    var (authors, unknownAuthors) = _context.GetAuthors(coverAuthors);
+                    _context.Authors.AddRange(unknownAuthors);
+                    unknownAuthors.ForEach(author => authors.Add(author));
 
                     issue.CoverAuthors
                         .Where(author => !authors.Contains(author))
@@ -226,27 +221,6 @@ namespace KucykoweRodeo.Controllers
             {
                 ViewData["CoverPath"] = coverPath;
             }
-        }
-
-        private (IList<Author>, IList<string>) GetAuthors(string query)
-        {
-            var names = query.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            var comparableNames = names
-                .Select(name => name.ToLower())
-                .ToList();
-
-            var knowns = _context.Authors
-                .AsQueryable()
-                .Where(author => comparableNames
-                    .Contains(author.ComparableName))
-                .ToList();
-
-            var unknowns = names
-                .Where(name => knowns.All(author => author.ComparableName != name.ToLower()))
-                .ToList();
-
-            return (knowns, unknowns);
         }
     }
 }
