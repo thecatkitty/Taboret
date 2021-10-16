@@ -33,7 +33,7 @@ namespace KucykoweRodeo.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public (List<Author>, List<Author>) GetAuthors(string query)
+        private static (List<T>, List<T>) GetFeatures<T>(IEnumerable<T> feature, string query) where T : Feature, new()
         {
             var names = query.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
@@ -41,7 +41,7 @@ namespace KucykoweRodeo.Data
                 .Select(name => name.ToLower())
                 .ToList();
 
-            var knowns = Authors
+            var knowns = feature
                 .AsQueryable()
                 .Where(author => comparableNames
                     .Contains(author.ComparableName))
@@ -49,7 +49,7 @@ namespace KucykoweRodeo.Data
 
             var unknowns = names
                 .Where(name => knowns.All(author => author.ComparableName != name.ToLower()))
-                .Select(author => new Author
+                .Select(author => new T
                 {
                     Name = author,
                     ComparableName = author.ToLower()
@@ -58,5 +58,9 @@ namespace KucykoweRodeo.Data
 
             return (knowns, unknowns);
         }
+
+        public (List<Author>, List<Author>) GetAuthors(string query) => GetFeatures(Authors, query);
+
+        public (List<Tag>, List<Tag>) GetTags(string query) => GetFeatures(Tags, query);
     }
 }

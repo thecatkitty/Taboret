@@ -78,6 +78,20 @@ namespace KucykoweRodeo.Controllers
                         .Where(author => !article.Authors.Contains(author))
                         .ToList()
                         .ForEach(author => article.Authors.Add(author));
+
+                    var (knownTags, unknownTags) = _context.GetTags(tags);
+                    _context.Tags.AddRange(unknownTags);
+                    unknownTags.ForEach(tag => knownTags.Add(tag));
+
+                    article.Tags
+                        .Where(tag => !knownTags.Contains(tag))
+                        .ToList()
+                        .ForEach(tag => article.Tags.Remove(tag));
+                    knownTags
+                        .Where(tag => !article.Tags.Contains(tag))
+                        .ToList()
+                        .ForEach(tag => article.Tags.Add(tag));
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(
                         nameof(IssuesController.Edit),
