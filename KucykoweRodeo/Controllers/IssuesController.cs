@@ -118,6 +118,10 @@ namespace KucykoweRodeo.Controllers
 
             ViewData["CoverAuthors"] = string.Join(", ", issue.CoverAuthors
                 .Select(author => author.Name));
+            ViewData["Categories"] = _context.Categories
+                .AsQueryable()
+                .OrderBy(category => category.ComparableName)
+                .ToList();
             return View(issue);
         }
 
