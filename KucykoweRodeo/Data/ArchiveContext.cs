@@ -35,6 +35,8 @@ namespace KucykoweRodeo.Data
 
         private static (List<T>, List<T>) GetFeatures<T>(IEnumerable<T> feature, string query) where T : Feature, new()
         {
+            query ??= "";
+
             var names = query.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             var comparableNames = names
