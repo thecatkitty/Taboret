@@ -137,6 +137,60 @@
     </div>
    </form>
   }
+  
+  <form class="card text-white bg-success mb-3" asp-controller="Articles" asp-action="Create" method="post">
+   <input type="hidden" name="IssueSignature" value="@Model.Signature" />
+   <div class="card-header input-group">
+    <div class="input-group-prepend">
+     <span class="input-group-text">+</span>
+    </div>
+    <input class="form-control font-weight-bold" name="Title" />
+    <div class="input-group-append">
+     <button type="submit" class="btn btn-primary">Zapisz</button>
+    </div>
+   </div>
+
+   <div class="card-body row">
+    <div class="col-md-6">
+     <div class="form-group">
+      <label>Temat</label>
+      <input class="form-control" name="Subject" />
+     </div>
+
+     <div class="form-group">
+      <label>Numer strony</label>
+      <input type="number" class="form-control" name="Page" />
+     </div>
+
+     <div class="form-group">
+      <label>Autorzy</label>
+      <input class="form-control" name="authors" />
+     </div>
+
+     <div class="form-group">
+      <label>Kategoria</label>
+      <input class="form-control" name="CategoryId" />
+     </div>
+
+     <div class="form-group">
+      <label>Liczba wyrazów</label>
+      <input type="number" class="form-control" name="WordCount" />
+     </div>
+    </div>
+
+    <div class="col-md-6">
+     <div class="form-group">
+      <label>Tagi</label>
+      <textarea class="form-control" name="tags"></textarea>
+     </div>
+
+     <div class="form-group">
+      <label>Lid</label>
+      <textarea class="form-control" name="Lead"></textarea>
+     </div>
+    </div>
+   </div>
+  </form>
 
  </div>
 </div>
