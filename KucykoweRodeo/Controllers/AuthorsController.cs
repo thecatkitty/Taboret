@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KucykoweRodeo.Data;
+using KucykoweRodeo.Models;
 
 namespace KucykoweRodeo.Controllers
 {
@@ -51,5 +54,12 @@ namespace KucykoweRodeo.Controllers
 
             return View(author);
         }
+
+        [HttpGet]
+        public IActionResult Suggest(string query) =>
+            Json(_context.SuggestAuthors(query)
+                .Select(author => author.Name)
+                .Take(20)
+                .ToList());
     }
 }

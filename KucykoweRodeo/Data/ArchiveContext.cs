@@ -88,6 +88,8 @@ namespace KucykoweRodeo.Data
             return authors.ToList();
         }
 
+        public List<Author> SuggestAuthors(string query) => SuggestFeatures(Authors, query);
+
         public List<Tag> SuggestTags(string query) => SuggestFeatures(Tags, query);
     }
 }
