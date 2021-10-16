@@ -29,10 +29,15 @@ namespace KucykoweRodeo.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Issues");
 
-            article.OrdinalNumber = _context.Articles
-                .AsQueryable()
-                .Where(a => a.IssueSignature == article.IssueSignature)
-                .Max(a => a.OrdinalNumber) + 1;
+            article.OrdinalNumber = 1;
+
+            if (_context.Articles.Any(a => a.IssueSignature == article.IssueSignature))
+            {
+                article.OrdinalNumber = _context.Articles
+                    .AsQueryable()
+                    .Where(a => a.IssueSignature == article.IssueSignature)
+                    .Max(a => a.OrdinalNumber) + 1;
+            }
 
             article.Authors ??= new HashSet<Author>();
             article.Tags ??= new HashSet<Tag>();
