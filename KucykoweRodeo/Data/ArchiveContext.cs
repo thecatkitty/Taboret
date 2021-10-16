@@ -62,5 +62,32 @@ namespace KucykoweRodeo.Data
         public (List<Author>, List<Author>) GetAuthors(string query) => GetFeatures(Authors, query);
 
         public (List<Tag>, List<Tag>) GetTags(string query) => GetFeatures(Tags, query);
+
+        private static List<T> SuggestFeatures<T>(IEnumerable<T> feature, string query) where T : Feature, new()
+        {
+            query = (query ?? "").ToLower();
+
+            var rawTags = query.Split(',', StringSplitOptions.TrimEntries);
+            var term = rawTags.Last();
+
+            IQueryable<T> authors = feature
+                .AsQueryable()
+                .OrderByDescending(tag => tag.Articles.Count);
+
+            if (rawTags.Length > 1)
+            {
+                var excluded = rawTags[..^1];
+                authors = authors.Where(author => !excluded.Contains(author.ComparableName));
+            }
+
+            if (term.Length != 0)
+            {
+                authors = authors.Where(author => author.ComparableName.Contains(rawTags.Last()));
+            }
+
+            return authors.ToList();
+        }
+
+        public List<Tag> SuggestTags(string query) => SuggestFeatures(Tags, query);
     }
 }

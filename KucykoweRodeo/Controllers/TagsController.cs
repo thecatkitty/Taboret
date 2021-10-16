@@ -55,32 +55,10 @@ namespace KucykoweRodeo.Controllers
         }
 
         [HttpGet]
-        public IActionResult Suggest(string query)
-        {
-            query = (query ?? "").ToLower();
-            
-            var rawTags = query.Split(',', StringSplitOptions.TrimEntries);
-            var term = rawTags.Last();
-
-            IQueryable<Tag> tags = _context.Tags
-                .AsQueryable()
-                .OrderByDescending(tag => tag.Articles.Count);
-
-            if (rawTags.Length > 1)
-            {
-                var excluded = rawTags[..^1];
-                tags = tags.Where(tag => !excluded.Contains(tag.ComparableName));
-            }
-
-            if (term.Length != 0)
-            {
-                tags = tags.Where(tag => tag.ComparableName.Contains(rawTags.Last()));
-            }
-
-            return Json(tags
+        public IActionResult Suggest(string query) =>
+            Json(_context.SuggestTags(query)
                 .Select(tag => tag.Name)
                 .Take(20)
                 .ToList());
-        }
     }
 }
