@@ -3,6 +3,8 @@
 ###############################################################################
 * text=auto
 
+KucykoweRodeo/wwwroot/lib/* linguist-vendored=true
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
