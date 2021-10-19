@@ -1,10 +1,6 @@
 ﻿"use strict";
 
 $(function () {
-  function split(val) {
-    return val.split(/,\s*/);
-  }
-
   function boldQuery(str, query) {
     var n = str.toUpperCase();
     var q = query.toUpperCase();
@@ -16,61 +12,39 @@ $(function () {
     return str.substr(0, x) + "<b>" + str.substr(x, l) + "</b>" + str.substr(x + l);
   }
 
-  var input = $("input[name=query]");
+  var selector = "input[name=query]";
   var articles = [];
 
-  input
-    // don't navigate away from the field on tab when selecting an item
-    .on("keydown",
-      function (event) {
-        if (event.keyCode === $.ui.keyCode.TAB &&
-          $(this).autocomplete("instance").menu.active) {
-          event.preventDefault();
-        }
-      })
-    .autocomplete({
-      minLength: 0,
-      source: function (request, response) {
-        $.ajax({
-          url: "/Search/Suggest",
-          data: { "query": request.term },
-          dataType: "json",
-          success: function (data) {
-            articles = data.articles;
-            response(
-              data.features.map(function (feature) {
-                var prefixCaptions = {
-                  "a:": "Autor: ",
-                  "c:": "Kategoria: "
-                };
-                var prefix = feature.value.substring(0, 2);
+  function onSuccess(data) {
+    articles = data.articles;
 
-                return {
-                  "prefix": prefixCaptions[prefix] || "",
-                  "caption": feature.caption,
-                  "value": feature.value
-                }
-              }));
-          }
-        });
-      },
-      focus: function () {
-        // prevent value inserted on focus
-        return false;
-      },
-      select: function (event, ui) {
-        var query = split(this.value);
-        // remove the current input
-        query.pop();
-        // add the selected item
-        query.push(ui.item.value);
-        // add placeholder to get the comma-and-space at the end
-        query.push("");
-        this.value = query.join(", ");
-        return false;
+    if (data.features.length === 0)
+      return [
+        {
+          "prefix": "",
+          "caption": "",
+          "value": ""
+        }
+      ];
+
+    return data.features.map(function (feature) {
+      var prefixCaptions = {
+        "a:": "Autor: ",
+        "c:": "Kategoria: "
+      };
+      var prefix = feature.value.substring(0, 2);
+
+      return {
+        "prefix": prefixCaptions[prefix] || "",
+        "caption": feature.caption,
+        "value": feature.value
       }
     });
+  }
 
+  addSuggestions(selector, "/Search/Suggest", onSuccess);
+
+  var input = $(selector);
   input.autocomplete("instance")._renderItem = function (ul, item) {
     var div = $("<div>")
       .append("<span class='text-muted'>" + item.prefix + "</span>")
