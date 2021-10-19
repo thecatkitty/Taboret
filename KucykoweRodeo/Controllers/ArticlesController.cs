@@ -27,7 +27,7 @@ namespace KucykoweRodeo.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("Title,IssueSignature,Page,Subject,CategoryId,Lead,WordCount")] Article article, string authors, string tags)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Issues");
+            if (!ModelState.IsValid) return Redirect("/Issues");
 
             article.OrdinalNumber = 1;
 
@@ -73,7 +73,7 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Issues");
+            if (!ModelState.IsValid) return Redirect("/Issues");
 
             try
             {
