@@ -27,7 +27,8 @@ namespace KucykoweRodeo.Data
                 new Magazine {Name = "Comichoof", Signature = "CH"},
                 new Magazine {Name = "MANEzette", Signature = "MZ"},
                 new Magazine {Name = "MANEzette Komiks", Signature = "MK"},
-                new Magazine {Name = "Equestria Times", Signature = "ET"}
+                new Magazine {Name = "Equestria Times", Signature = "ET"},
+                new Magazine {Name = "Equinox Times", Signature = "EQ"}
             };
 
             foreach (var magazine in magazines)
