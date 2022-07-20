@@ -34,7 +34,12 @@ namespace KucykoweRodeo
                     options.SaveTokens = true;
                 });
 
-            services.AddDbContext<ArchiveContext>(options => options.UseSqlite(Configuration["ConnectionStrings:ArchiveContext"]));
+            services.AddDbContext<ArchiveContext>(options =>
+            {
+                options.UseSqlite(
+                    Configuration["ConnectionStrings:ArchiveContext"],
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            });
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRazorPages();
 
