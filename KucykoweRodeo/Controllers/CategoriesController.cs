@@ -14,7 +14,7 @@ namespace KucykoweRodeo.Controllers
             _context = context;
         }
 
-        // GET: Tags
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories
@@ -22,7 +22,7 @@ namespace KucykoweRodeo.Controllers
                 .ToListAsync());
         }
 
-        // GET: Tags/Details/5
+        // GET: Tags/Categories/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,24 +30,22 @@ namespace KucykoweRodeo.Controllers
                 return NotFound();
             }
 
-            var tag = await _context.Categories
+            var category = await _context.Categories
                 .Include(t => t.Articles)
                 .ThenInclude(article => article.Issue)
                 .ThenInclude(issue => issue.Magazine)
                 .Include(a => a.Articles)
                 .ThenInclude(article => article.Authors)
                 .Include(a => a.Articles)
-                .ThenInclude(article => article.Category)
-                .Include(a => a.Articles)
                 .ThenInclude(article => article.Tags)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
             ViewData["ArticleListColumn"] = "issue";
-            return View(tag);
+            return View(category);
         }
     }
 }
