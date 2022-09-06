@@ -1,0 +1,38 @@
+﻿@using System.Globalization
+@model IEnumerable<Taboret.Models.Tag>
+
+@{
+ ViewData["Title"] = "Tagi";
+ ViewData["Description"] = "Chmura tagów";
+ Layout = "_Layout";
+}
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Tagi</li>
+ </ol>
+</nav>
+
+<h1>Chmura tagów</h1>
+
+<div class="row">
+
+ <div class="col">
+
+  <ul class="list-inline small text-justify">
+   @foreach (var tag in Model.OrderByDescending(tag => tag.Articles.Count))
+   {
+    <li class="list-inline-item border border-primary rounded mt-1 p-1">
+     @{
+      var textSize = Math.Max(1, Math.Log10(tag.Articles.Count)) * 100;
+     }
+     <a asp-action="Details" asp-route-id="@tag.Id" style="font-size: @(textSize.ToString("N2", CultureInfo.InvariantCulture))%">@tag.Name</a>
+     <span class="text-muted">@tag.Articles.Count</span>
+    </li>
+   }
+  </ul>
+
+ </div>
+
+</div>

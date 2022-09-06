@@ -1,0 +1,53 @@
+﻿@model Taboret.Models.Author
+
+@{
+ ViewData["Title"] = Model.Name;
+ ViewData["Description"] = $"Autor - {Model.Name}";
+ ViewData["ArticleListColumn"] = "issue";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">Autorzy</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+ </ol>
+</nav>
+
+<h1>@Model.Name</h1>
+
+<div class="row">
+
+ <div class="col">
+  <dl>
+   <dt>Liczba artykułów</dt>
+   <dd>@Model.Articles.Count</dd>
+
+   <dt>Łączna liczba wyrazów</dt>
+   <dd>@Model.Articles.Sum(a => a.WordCount).ToString("N0")</dd>
+
+   @if (Model.Covers.Any())
+   {
+    <dt>Zaprojektowane okładki</dt>
+    <dd>
+     <ul class="list-inline small">
+      @foreach (var issue in Model.Covers)
+      {
+       <li class="list-inline-item">
+        <a asp-controller="Issues" asp-action="Details" asp-route-id="@issue.Signature">@issue.Magazine.Name @issue.CoverSignature</a>
+       </li>
+      }
+     </ul>
+    </dd>
+   }
+  </dl>
+ </div>
+
+</div>
+
+<div class="row">
+ <div class="col">
+  <partial name="_ArticleList" model="Model.Articles" />
+ </div>
+</div>

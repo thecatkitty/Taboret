@@ -1,0 +1,14 @@
+﻿@page
+@model Taboret.Areas.Identity.Pages.Account.ExternalLoginModel
+@{
+ ViewData["Title"] = "Rejestracja";
+}
+
+<form class="d-none" asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+ <button type="submit">Register</button>
+</form>
+
+@section Scripts
+{
+ <script>$("form button[type=submit]").click()</script>
+}

@@ -1,0 +1,73 @@
+﻿@page
+@model Taboret.Pages.IndexModel
+@{
+ ViewData["Title"] = "Strona główna";
+}
+
+@section AfterHeader
+{
+ <div class="jumbotron rounded-0" style="background-color: #1848a0">
+  <h1 class="mb-5 text-center" style="color: #ed892a">Archiwum ET</h1>
+  <div class="container">
+   <partial name="_SearchBox" />
+  </div>
+ </div>
+}
+
+<div class="row">
+
+ <div class="card-deck">
+
+  <div class="card bg-light">
+   <div class="card-body">
+    <h5 class="card-title">Wydania</h5>
+    <p class="card-text">
+     Skatalogowano @Model.Context.Issues.Count(issue => issue.IsArchived)
+     z @Model.Context.Issues.Count() wydań.
+     Stanowi to @Model.Context.Articles.Count() artykułów składających się
+     z @Model.Context.Articles.Sum(article => article.WordCount).ToString("N0") wyrazów.
+    </p>
+    @* ReSharper disable once Html.PathError *@
+    <a href="/Issues" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card bg-light">
+   <div class="card-body">
+    <h5 class="card-title">Autorzy</h5>
+    <p class="card-text">
+     Liczba autorów skatalogowanych artykułów i okładek wynosi @Model.Context.Authors.Count().
+    </p>
+    <a asp-controller="Authors" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card bg-light">
+   <div class="card-body">
+    <h5 class="card-title">Kategorie</h5>
+    <p class="card-text">
+     Obecnie artykuły umieszczone są w @Model.Context.Categories.Count() kategoriach.
+    </p>
+    <a asp-controller="Categories" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+  <div class="card bg-light">
+   <div class="card-body">
+    <h5 class="card-title">Tagi</h5>
+    <p class="card-text">
+     Każdy tag odpowiada jakiemuś pojęciu istotnemu z perspektywy oznaczonych nim artykułów.
+     Jest ich obecnie @Model.Context.Tags.Count().
+    </p>
+    <a asp-controller="Tags" class="stretched-link">Wyświetl</a>
+   </div>
+  </div>
+
+ </div>
+
+</div>
+
+@section Scripts
+{
+ <script src="~/js/search.js"></script>
+}

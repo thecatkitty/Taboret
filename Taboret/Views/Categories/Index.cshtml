@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Taboret.Models.Category>
+
+@{
+ ViewData["Title"] = "Kategorie";
+ ViewData["Description"] = "Lista kategoryj";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Kategorie</li>
+ </ol>
+</nav>
+
+<h1>Wykaz kategoryj</h1>
+
+<div class="row">
+
+ <div class="col">
+
+  <div class="list-group">
+   @foreach (var category in Model.OrderBy(category => category.Name))
+   {
+    <a class="list-group-item list-group-item-action" asp-action="Details" asp-route-id="@category.Id">
+     @category.Name
+     <span class="text-muted">(@category.Articles.Count)</span>
+    </a>
+   }
+  </div>
+
+ </div>
+
+</div>

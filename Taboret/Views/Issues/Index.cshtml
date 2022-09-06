@@ -1,0 +1,45 @@
+﻿@using System.Text.RegularExpressions
+@model IEnumerable<Taboret.Models.Issue>
+
+@{
+ ViewData["Title"] = "Wydania";
+ ViewData["Description"] = "Lista wydań";
+ Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Start</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Wydania</li>
+ </ol>
+</nav>
+
+<h1>Wydania</h1>
+
+@foreach (var year in Model
+.OrderBy(issue => issue.PublicationDate.Year)
+.GroupBy(issue => issue.PublicationDate.Year))
+{
+ <div class="row">
+
+  <div class="col-2">
+   <h3>@year.Key</h3>
+  </div>
+
+  <div class="col">
+   @foreach (var magazine in year
+   .OrderBy(issue => issue.Magazine.Name)
+   .GroupBy(issue => issue.Magazine))
+   {
+    <p>
+     <b>@magazine.Key.Name:</b>
+     @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
+     {
+      <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
+     }
+    </p>
+   }
+  </div>
+
+ </div>
+}
