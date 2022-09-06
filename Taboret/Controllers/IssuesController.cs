@@ -220,7 +220,7 @@ namespace Taboret.Controllers
         private void SetCoverPath(Issue issue)
         {
             var coverPath = "/coth/" + issue.Signature + ".png";
-            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "assets") + coverPath))
+            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "Assets") + coverPath))
             {
                 ViewData["CoverPath"] = coverPath;
             }
