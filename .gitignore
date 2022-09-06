@@ -365,4 +365,5 @@ FodyWeavers.xsd
 
 *.xlsx
 *.sqlite3
-assets/
+*.sqlite3-*
+*/Assets/coth/*
