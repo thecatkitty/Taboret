@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taboret.Data;
 
+#nullable disable
+
 namespace Taboret.Migrations
 {
     [DbContext(typeof(ArchiveContext))]
@@ -13,8 +15,7 @@ namespace Taboret.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
             modelBuilder.Entity("ArticleAuthor", b =>
                 {
@@ -61,142 +62,6 @@ namespace Taboret.Migrations
                     b.ToTable("AuthorIssue");
                 });
 
-            modelBuilder.Entity("Taboret.Models.Article", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("IssueSignature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Lead")
-                        .HasColumnType("TEXT");
-
-                    b.Property<uint>("OrdinalNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint>("Page")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.Property<uint>("WordCount")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("IssueSignature");
-
-                    b.ToTable("Article");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Author", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ComparableName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Author");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ComparableName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Issue", b =>
-                {
-                    b.Property<string>("Signature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CoverSignature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MagazineSignature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<uint>("PageCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("PublicationDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Signature");
-
-                    b.HasIndex("MagazineSignature");
-
-                    b.ToTable("Issue");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Magazine", b =>
-                {
-                    b.Property<string>("Signature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Signature");
-
-                    b.ToTable("Magazine");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ComparableName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tag");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -220,7 +85,7 @@ namespace Taboret.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -243,7 +108,7 @@ namespace Taboret.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -307,7 +172,7 @@ namespace Taboret.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -330,7 +195,7 @@ namespace Taboret.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -354,7 +219,7 @@ namespace Taboret.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -369,7 +234,7 @@ namespace Taboret.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -390,7 +255,143 @@ namespace Taboret.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Article", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("IssueSignature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Lead")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("OrdinalNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("Page")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("WordCount")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IssueSignature");
+
+                    b.ToTable("Article", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Author", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ComparableName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Author", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ComparableName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Issue", b =>
+                {
+                    b.Property<string>("Signature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CoverSignature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("MagazineSignature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("PageCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PublicationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Signature");
+
+                    b.HasIndex("MagazineSignature");
+
+                    b.ToTable("Issue", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Magazine", b =>
+                {
+                    b.Property<string>("Signature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Signature");
+
+                    b.ToTable("Magazine", (string)null);
+                });
+
+            modelBuilder.Entity("Taboret.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ComparableName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag", (string)null);
                 });
 
             modelBuilder.Entity("ArticleAuthor", b =>
@@ -436,32 +437,6 @@ namespace Taboret.Migrations
                         .HasForeignKey("CoversSignature")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Taboret.Models.Article", b =>
-                {
-                    b.HasOne("Taboret.Models.Category", "Category")
-                        .WithMany("Articles")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taboret.Models.Issue", "Issue")
-                        .WithMany("Articles")
-                        .HasForeignKey("IssueSignature");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Issue");
-                });
-
-            modelBuilder.Entity("Taboret.Models.Issue", b =>
-                {
-                    b.HasOne("Taboret.Models.Magazine", "Magazine")
-                        .WithMany("Issues")
-                        .HasForeignKey("MagazineSignature");
-
-                    b.Navigation("Magazine");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -513,6 +488,32 @@ namespace Taboret.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Taboret.Models.Article", b =>
+                {
+                    b.HasOne("Taboret.Models.Category", "Category")
+                        .WithMany("Articles")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taboret.Models.Issue", "Issue")
+                        .WithMany("Articles")
+                        .HasForeignKey("IssueSignature");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Issue");
+                });
+
+            modelBuilder.Entity("Taboret.Models.Issue", b =>
+                {
+                    b.HasOne("Taboret.Models.Magazine", "Magazine")
+                        .WithMany("Issues")
+                        .HasForeignKey("MagazineSignature");
+
+                    b.Navigation("Magazine");
                 });
 
             modelBuilder.Entity("Taboret.Models.Category", b =>
