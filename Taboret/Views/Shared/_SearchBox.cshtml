@@ -1,12 +1,15 @@
-﻿@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get))
 {
  <div class="form-row align-items-center">
   <div class="col">
-   <input type="text" class="form-control" name="query" value="@(ViewData["SearchQuery"] ?? "")" placeholder="Wprowadź frazę wyszukiwania...">
+   <input type="text" class="form-control" name="query" value="@(ViewData["SearchQuery"] ?? "")" placeholder="@Localizer["Enter the query..."]">
   </div>
    
   <div class="col-auto">
-   <button type="submit" class="btn btn-primary">Szukaj</button>
+   <button type="submit" class="btn btn-primary">@Localizer["Search"]</button>
   </div>
  </div>
 }

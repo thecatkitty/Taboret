@@ -1,17 +1,19 @@
 ﻿@using Taboret.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 @model Taboret.Models.Issue
 
 @{
  ViewData["Title"] = $"{Model.Magazine.Name} {Model.CoverSignature}";
- ViewData["Description"] = $"Wydanie - {Model.Magazine.Name} {Model.CoverSignature}";
+ ViewData["Description"] = $"{Localizer["Issue"]} - {Model.Magazine.Name} {Model.CoverSignature}";
  ViewData["ArticleListColumn"] = "page";
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item"><a href="/Issues">Wydania</a></li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item"><a href="/Issues">@Localizer["Issues"]</a></li>
   <li class="breadcrumb-item active" aria-current="page">@Model.Magazine.Name @Model.CoverSignature</li>
  </ol>
 </nav>
@@ -23,39 +25,44 @@
  <div class="col-md-4">
   @if (ViewData["CoverPath"] == null)
   {
-   <img class="d-block mx-auto mw-100" src="~/Assets/nocoth.png" alt="Brak okładki" />
+   <img class="d-block mx-auto mw-100" src="~/Assets/nocoth.png" alt="@Localizer["No cover image"]" />
   }
   else
   {
-   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="Okładka @Model.Magazine.Name nr @Model.CoverSignature" />
+   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="@string.Format(
+         Localizer["Cover image of {0} issue {1}"].Value,
+         Model.Magazine.Name,
+         Model.CoverSignature)" />
   }
  </div>
 
  <div class="col-md-8">
 
   <a class="btn btn-primary" target="_blank" href="@Model.Url">
-   Czytaj na @PublisherHandler.GetFromUrl(Model.Url).Name
+   @string.Format(
+         Localizer["Read on {0}"].Value,
+         PublisherHandler.GetFromUrl(Model.Url).Name)
   </a>
   
   @if (User?.Identity?.IsAuthenticated ?? false)
   {
    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model.Signature">
-    Modyfikuj
+    @Localizer["Modify"]
    </a>
   }
 
   <dl>
 
-   <dt>Data publikacji</dt>
-   <dd>@Model.PublicationDate.ToString("d MMMM yyyy")</dd>
+   <dt>@Localizer["Publishing date"]</dt>
+   <dd>@Model.PublicationDate.ToShortDateString()</dd>
 
-   <dt>Liczba stron</dt>
+   <dt>@Localizer["Number of pages"]</dt>
    <dd>@Model.PageCount</dd>
 
-   <dt>Łączna liczba wyrazów</dt>
+   <dt>@Localizer["Total word count"]</dt>
    <dd>@Model.Articles.Sum(a => a.WordCount).ToString("N0")</dd>
 
-   <dt>Autorzy okładki</dt>
+   <dt>@Localizer["Cover artists"]</dt>
    <dd>
     @foreach (var author in Model.CoverAuthors)
     {
@@ -63,25 +70,25 @@
     }
    </dd>
 
-   <dt>Stan archiwizacji</dt>
+   <dt>@Localizer["Archiving status"]</dt>
    <dd>
     @if (Model.IsArchived)
     {
-     <span class="badge badge-success">Zatwierdzony</span>
+     <span class="badge badge-success">@Localizer["Approved"]</span>
     }
     else if (Model.Articles.Count > 0)
     {
-     <span class="badge badge-warning">W trakcie</span>
+     <span class="badge badge-warning">@Localizer["In progress"]</span>
     }
     else
     {
-     <span class="badge badge-danger">W kolejce</span>
+     <span class="badge badge-danger">@Localizer["Pending"]</span>
     }
    </dd>
 
   </dl>
 
-  <p class="text-muted">Ostatnia aktualizacja wpisu: @Model.UpdateTime.ToString("d MMMM yyyy")</p>
+  <p class="text-muted">@Localizer["Last entry update:"] @Model.UpdateTime.ToShortDateString()</p>
  </div>
 
 </div>

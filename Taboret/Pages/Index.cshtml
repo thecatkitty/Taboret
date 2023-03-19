@@ -1,7 +1,9 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 @model Taboret.Pages.IndexModel
 @{
- ViewData["Title"] = "Strona główna";
+ ViewData["Title"] = Localizer["Start"];
 }
 
 @section AfterHeader
@@ -22,13 +24,15 @@
    <div class="card-body">
     <h5 class="card-title">Wydania</h5>
     <p class="card-text">
-     Skatalogowano @Model.Context.Issues.Count(issue => issue.IsArchived)
-     z @Model.Context.Issues.Count() wydań.
-     Stanowi to @Model.Context.Articles.Count() artykułów składających się
-     z @Model.Context.Articles.Sum(article => article.WordCount).ToString("N0") wyrazów.
+     @string.Format(
+         Localizer["Indexed {0} of {1} issues. This amounts to {2} articles consisting of {3:N0} words."].Value,
+         Model.Context.Issues.Count(issue => issue.IsArchived),
+         Model.Context.Issues.Count(),
+         Model.Context.Articles.Count(),
+         Model.Context.Articles.Sum(article => article.WordCount))
     </p>
     @* ReSharper disable once Html.PathError *@
-    <a href="/Issues" class="stretched-link">Wyświetl</a>
+    <a href="/Issues" class="stretched-link">@Localizer["Browse"]</a>
    </div>
   </div>
 
@@ -36,9 +40,11 @@
    <div class="card-body">
     <h5 class="card-title">Autorzy</h5>
     <p class="card-text">
-     Liczba autorów skatalogowanych artykułów i okładek wynosi @Model.Context.Authors.Count().
+     @string.Format(
+         Localizer["The number of authors of indexed articles and covers is {0}."].Value,
+         Model.Context.Authors.Count())
     </p>
-    <a asp-controller="Authors" class="stretched-link">Wyświetl</a>
+    <a asp-controller="Authors" class="stretched-link">@Localizer["Browse"]</a>
    </div>
   </div>
 
@@ -46,9 +52,11 @@
    <div class="card-body">
     <h5 class="card-title">Kategorie</h5>
     <p class="card-text">
-     Obecnie artykuły umieszczone są w @Model.Context.Categories.Count() kategoriach.
+     @string.Format(
+         Localizer["Currently articles are placed in {0} categories."].Value,
+         Model.Context.Categories.Count())
     </p>
-    <a asp-controller="Categories" class="stretched-link">Wyświetl</a>
+    <a asp-controller="Categories" class="stretched-link">@Localizer["Browse"]</a>
    </div>
   </div>
 
@@ -56,10 +64,11 @@
    <div class="card-body">
     <h5 class="card-title">Tagi</h5>
     <p class="card-text">
-     Każdy tag odpowiada jakiemuś pojęciu istotnemu z perspektywy oznaczonych nim artykułów.
-     Jest ich obecnie @Model.Context.Tags.Count().
+     @string.Format(
+         Localizer["Every tag corresponds to some concept related to tagged articles. There's {0} of them."].Value,
+         Model.Context.Tags.Count())
     </p>
-    <a asp-controller="Tags" class="stretched-link">Wyświetl</a>
+    <a asp-controller="Tags" class="stretched-link">@Localizer["Browse"]</a>
    </div>
   </div>
 

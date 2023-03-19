@@ -1,16 +1,18 @@
-﻿@model Taboret.Models.Author
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+@model Taboret.Models.Author
 
 @{
  ViewData["Title"] = Model.Name;
- ViewData["Description"] = $"Autor - {Model.Name}";
+ ViewData["Description"] = $"{Localizer["Author"]} - {Model.Name}";
  ViewData["ArticleListColumn"] = "issue";
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item"><a asp-action="Index">Autorzy</a></li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">@Localizer["Authors"]</a></li>
   <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
  </ol>
 </nav>
@@ -21,15 +23,15 @@
 
  <div class="col">
   <dl>
-   <dt>Liczba artykułów</dt>
+   <dt>@Localizer["No. of articles"]</dt>
    <dd>@Model.Articles.Count</dd>
 
-   <dt>Łączna liczba wyrazów</dt>
+   <dt>@Localizer["Total word count"]</dt>
    <dd>@Model.Articles.Sum(a => a.WordCount).ToString("N0")</dd>
 
    @if (Model.Covers.Any())
    {
-    <dt>Zaprojektowane okładki</dt>
+    <dt>@Localizer["Designed covers"]</dt>
     <dd>
      <ul class="list-inline small">
       @foreach (var issue in Model.Covers)

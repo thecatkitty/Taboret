@@ -1,20 +1,22 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 @model IEnumerable<Taboret.Models.Tag>
 
 @{
- ViewData["Title"] = "Tagi";
- ViewData["Description"] = "Chmura tagów";
+ ViewData["Title"] = Localizer["Tags"];
+ ViewData["Description"] = Localizer["Tag cloud"];
  Layout = "_Layout";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Tagi</li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Localizer["Tags"]</li>
  </ol>
 </nav>
 
-<h1>Chmura tagów</h1>
+<h1>@Localizer["Tag cloud"]</h1>
 
 <div class="row">
 

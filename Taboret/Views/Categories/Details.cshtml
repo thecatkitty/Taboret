@@ -1,20 +1,22 @@
-﻿@model Taboret.Models.Category
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+@model Taboret.Models.Category
 
 @{
  ViewData["Title"] = $"{Model.Name}";
- ViewData["Description"] = $"Kategoria - {Model.Name}";
+ ViewData["Description"] = $"{Localizer["Category"]} - {Model.Name}";
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item"><a asp-action="Index">Kategorie</a></li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">@Localizer["Categories"]</a></li>
   <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
  </ol>
 </nav>
 
-<h1>Artykuły w kategorii „@Model.Name”</h1>
+<h1>@string.Format(Localizer["Articles in the category “{0}”"].Value, Model.Name)</h1>
 
 
 <div class="row">

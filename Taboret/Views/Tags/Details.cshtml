@@ -1,20 +1,22 @@
-﻿@model Taboret.Models.Tag
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+@model Taboret.Models.Tag
 
 @{
  ViewData["Title"] = $"{Model.Name}";
- ViewData["Description"] = $"Tag - {Model.Name}";
+ ViewData["Description"] = $"{Localizer["Tag"]} - {Model.Name}";
  Layout = "_Layout";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item"><a asp-action="Index">Tagi</a></li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item"><a asp-action="Index">@Localizer["Tags"]</a></li>
   <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
  </ol>
 </nav>
 
-<h1>Artykuły z tagiem „@Model.Name”</h1>
+<h1>@string.Format(Localizer["Articles tagged with “{0}”"].Value, Model.Name)</h1>
 
 
 <div class="row">

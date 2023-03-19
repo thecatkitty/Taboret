@@ -1,19 +1,21 @@
-﻿@model IEnumerable<Taboret.Models.Article>
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+@model IEnumerable<Taboret.Models.Article>
 
 @{
- ViewData["Title"] = "Wyszukiwanie";
- ViewData["Description"] = "Wyszukiwanie";
+ ViewData["Title"] = Localizer["Searching"];
+ ViewData["Description"] = Localizer["Searching for articles"];
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Wyszukiwanie</li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Localizer["Searching"]</li>
  </ol>
 </nav>
 
-<h1>Wyniki wyszukiwania</h1>
+<h1>@Localizer["Search results"]</h1>
 
 <div class="row">
  <div class="col">

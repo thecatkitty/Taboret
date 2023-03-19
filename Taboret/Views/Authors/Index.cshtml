@@ -1,9 +1,11 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 @model IEnumerable<Taboret.Models.Author>
 
 @{
- ViewData["Title"] = "Lista autorów";
- ViewData["Description"] = "Lista autorów";
+ ViewData["Title"] = Localizer["Authors"];
+ ViewData["Description"] = Localizer["List of authors"];
  Layout = "~/Pages/Shared/_Layout.cshtml";
 
  decimal maxWordCount = Model.Select(a => a.Articles.Sum(b => b.WordCount)).Max();
@@ -11,12 +13,12 @@
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">Start</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Autorzy</li>
+  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@Localizer["Authors"]</li>
  </ol>
 </nav>
 
-<h1>Autorzy</h1>
+<h1>@Localizer["Authors"]</h1>
 
 <div class="row">
 
@@ -25,8 +27,8 @@
   <table class="table">
    <thead>
     <tr>
-     <th>Nazwa</th>
-     <th colspan="2">Artykuły</th>
+     <th>@Localizer["Name"]</th>
+     <th colspan="2">@Localizer["Articles"]</th>
     </tr>
    </thead>
    <tbody>
@@ -44,7 +46,7 @@
          var percentWidth = wordCount / maxWordCount * 100;
         }
         <div class="progress-bar" role="progressbar" style="width: @percentWidth.ToString(CultureInfo.InvariantCulture)%">
-         <span>@wordCount.ToString("N0") wyr.</span>
+         <span>@string.Format(Localizer["{0:N0} words"].Value, wordCount)</span>
         </div>
        </div>
       </td>

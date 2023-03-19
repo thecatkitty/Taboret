@@ -1,17 +1,19 @@
 ﻿@using Taboret.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 @model ICollection<Taboret.Models.Article>
 
 
-<h2>Artykuły</h2>
+<h2>@Localizer["Articles"]</h2>
    
 <table class="table table-hover">
 
  <thead>
  <tr>
-  <th scope="col">Artykuł</th>
-  <th scope="col">Autorzy</th>
-  <th scope="col">Kategoria i tagi</th>
-  <th scope="col">@((string)ViewData["ArticleListColumn"] == "page" ? "Strona" : "Wydanie")</th>
+  <th scope="col">@Localizer["Article"]</th>
+  <th scope="col">@Localizer["Authors"]</th>
+  <th scope="col">@Localizer["Category and tags"]</th>
+  <th scope="col">@((string)ViewData["ArticleListColumn"] == "page" ? Localizer["Page"] : Localizer["Issue"])</th>
  </tr>
  </thead>
     
