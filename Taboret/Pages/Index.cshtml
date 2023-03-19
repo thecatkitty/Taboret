@@ -3,80 +3,81 @@
 @inject IViewLocalizer Localizer
 @model Taboret.Pages.IndexModel
 @{
- ViewData["Title"] = Localizer["Start"];
+    ViewData["Title"] = Localizer["Start"];
 }
 
 @section AfterHeader
-{
- <div class="jumbotron rounded-0" style="background-color: #1848a0">
-  <h1 class="mb-5 text-center" style="color: #ed892a">Archiwum ET</h1>
-  <div class="container">
-   <partial name="_SearchBox" />
-  </div>
- </div>
+    {
+    <!-- TODO: Parametrize name and colors -->
+    <div class="jumbotron rounded-0" style="background-color: #1848a0">
+        <h1 class="mb-5 text-center" style="color: #ed892a">Archiwum ET</h1>
+        <div class="container">
+            <partial name="_SearchBox" />
+        </div>
+    </div>
 }
 
 <div class="row">
 
- <div class="card-deck">
+    <div class="card-deck">
 
-  <div class="card bg-light">
-   <div class="card-body">
-    <h5 class="card-title">Wydania</h5>
-    <p class="card-text">
-     @string.Format(
-         Localizer["Indexed {0} of {1} issues. This amounts to {2} articles consisting of {3:N0} words."].Value,
-         Model.Context.Issues.Count(issue => issue.IsArchived),
-         Model.Context.Issues.Count(),
-         Model.Context.Articles.Count(),
-         Model.Context.Articles.Sum(article => article.WordCount))
-    </p>
-    @* ReSharper disable once Html.PathError *@
-    <a href="/Issues" class="stretched-link">@Localizer["Browse"]</a>
-   </div>
-  </div>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Wydania</h5>
+                <p class="card-text">
+                    @string.Format(
+                    Localizer["Indexed {0} of {1} issues. This amounts to {2} articles consisting of {3:N0} words."].Value,
+                    Model.Context.Issues.Count(issue => issue.IsArchived),
+                    Model.Context.Issues.Count(),
+                    Model.Context.Articles.Count(),
+                    Model.Context.Articles.Sum(article => article.WordCount))
+                </p>
+                @* ReSharper disable once Html.PathError *@
+                <a href="/Issues" class="stretched-link">@Localizer["Browse"]</a>
+            </div>
+        </div>
 
-  <div class="card bg-light">
-   <div class="card-body">
-    <h5 class="card-title">Autorzy</h5>
-    <p class="card-text">
-     @string.Format(
-         Localizer["The number of authors of indexed articles and covers is {0}."].Value,
-         Model.Context.Authors.Count())
-    </p>
-    <a asp-controller="Authors" class="stretched-link">@Localizer["Browse"]</a>
-   </div>
-  </div>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Autorzy</h5>
+                <p class="card-text">
+                    @string.Format(
+                    Localizer["The number of authors of indexed articles and covers is {0}."].Value,
+                    Model.Context.Authors.Count())
+                </p>
+                <a asp-controller="Authors" class="stretched-link">@Localizer["Browse"]</a>
+            </div>
+        </div>
 
-  <div class="card bg-light">
-   <div class="card-body">
-    <h5 class="card-title">Kategorie</h5>
-    <p class="card-text">
-     @string.Format(
-         Localizer["Currently articles are placed in {0} categories."].Value,
-         Model.Context.Categories.Count())
-    </p>
-    <a asp-controller="Categories" class="stretched-link">@Localizer["Browse"]</a>
-   </div>
-  </div>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Kategorie</h5>
+                <p class="card-text">
+                    @string.Format(
+                    Localizer["Currently articles are placed in {0} categories."].Value,
+                    Model.Context.Categories.Count())
+                </p>
+                <a asp-controller="Categories" class="stretched-link">@Localizer["Browse"]</a>
+            </div>
+        </div>
 
-  <div class="card bg-light">
-   <div class="card-body">
-    <h5 class="card-title">Tagi</h5>
-    <p class="card-text">
-     @string.Format(
-         Localizer["Every tag corresponds to some concept related to tagged articles. There's {0} of them."].Value,
-         Model.Context.Tags.Count())
-    </p>
-    <a asp-controller="Tags" class="stretched-link">@Localizer["Browse"]</a>
-   </div>
-  </div>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Tagi</h5>
+                <p class="card-text">
+                    @string.Format(
+                    Localizer["Every tag corresponds to some concept related to tagged articles. There's {0} of them."].Value,
+                    Model.Context.Tags.Count())
+                </p>
+                <a asp-controller="Tags" class="stretched-link">@Localizer["Browse"]</a>
+            </div>
+        </div>
 
- </div>
+    </div>
 
 </div>
 
 @section Scripts
-{
- <script src="~/js/search.js"></script>
+    {
+    <script src="~/js/search.js"></script>
 }

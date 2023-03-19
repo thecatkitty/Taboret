@@ -1,67 +1,63 @@
-﻿<!-- TODO: DEKUCYZACJA -->
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!-- TODO: Report the actual language -->
 <html lang="en">
 
 <head>
- <meta charset="utf-8"/>
- <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <title>@ViewData["Title"] - Archiwum Equinox Times</title>
- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
- <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css"/>
- <link rel="stylesheet" href="~/css/site.css"/>
- <meta name="twitter:card" content="summary"/>
- <meta name="twitter:site" content="@@EquinoxTimes"/>
- <meta name="twitter:title" content="Archiwum Equinox Times"/>
- <meta name="twitter:description" content="@ViewData["Description"]"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TODO: Parametrize site name -->
+    <title>@ViewData["Title"] - Archiwum Equinox Times</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- TODO: Parametrize Twitter summary -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@@EquinoxTimes" />
+    <meta name="twitter:title" content="Archiwum Equinox Times" />
+    <meta name="twitter:description" content="@ViewData["Description"]" />
 </head>
 
 <body>
 
-<header>
- <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <div class="container">
-   <a class="navbar-brand" asp-area="" asp-page="/Index">Archiwum Equinox Times</a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-           aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-   </button>
-   <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-    <ul class="nav navbar-nav">
-     <!--
-     <li class="nav-item">
-      <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-     </li>
-     <li class="nav-item">
-      <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-     </li>
-     -->
-    </ul>
-    <partial name="_LoginPartial" />
-   </div>
-  </div>
- </nav>
-</header>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container">
+                <!-- TODO: Parametrize site name -->
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Archiwum Equinox Times</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
 
-@await RenderSectionAsync("AfterHeader", required: false)
+    @await RenderSectionAsync("AfterHeader", required: false)
 
-<div class="container">
- <main role="main" class="pb-3">
-  @RenderBody()
- </main>
-</div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
-<footer class="border-top footer text-muted">
- <div class="container">
-  &copy; 2021-2023 <a href="https://catk.it/" target="_blank">Mateusz „Catkitty” Karcz</a>
- </div>
-</footer>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <!-- TODO: Parametrize copyright info -->
+            &copy; 2021-2023 <a href="https://catk.it/" target="_blank">Mateusz „Catkitty” Karcz</a>
+        </div>
+    </footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>
