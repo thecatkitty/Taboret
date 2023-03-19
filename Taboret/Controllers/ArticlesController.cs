@@ -82,11 +82,11 @@ namespace Taboret.Controllers
                 article.Title = input.Title ?? article.Title;
                 article.Subject = input.Subject ?? article.Subject;
                 article.Lead = input.Lead ?? article.Lead;
-                    
+
                 if (input.Page != 0) article.Page = input.Page;
                 if (input.CategoryId != 0) article.CategoryId = input.CategoryId;
                 if (input.WordCount != 0) article.WordCount = input.WordCount;
-                    
+
                 var (knownAuthors, unknownAuthors) = _context.GetAuthors(authors);
                 _context.Authors.AddRange(unknownAuthors);
                 unknownAuthors.ForEach(author => knownAuthors.Add(author));

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Discord.Rest;
+﻿using Discord.Rest;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Taboret.Areas.Identity
 {

@@ -219,6 +219,7 @@ namespace Taboret.Controllers
 
         private void SetCoverPath(Issue issue)
         {
+            // TODO: Parametrize covers thumbnail directory
             var coverPath = "/coth/" + issue.Signature + ".png";
             if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "Assets") + coverPath))
             {
