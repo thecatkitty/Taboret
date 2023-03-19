@@ -120,10 +120,4 @@
   <data name="Articles tagged with “{0}”" xml:space="preserve">
     <value>Artykuły z tagiem „{0}”</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Tagi</value>
-  </data>
 </root>

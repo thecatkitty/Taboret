@@ -6,15 +6,15 @@
 @model IEnumerable<Taboret.Models.Category>
 
 @{
- ViewData["Title"] = Localizer["Categories"];
+ ViewData["Title"] = SharedLocalizer["Categories"];
  ViewData["Description"] = Localizer["List of categories"];
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@Localizer["Categories"]</li>
+  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Categories"]</li>
  </ol>
 </nav>
 

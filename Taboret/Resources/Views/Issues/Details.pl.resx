@@ -126,9 +126,6 @@
   <data name="In progress" xml:space="preserve">
     <value>W trakcie</value>
   </data>
-  <data name="Issues" xml:space="preserve">
-    <value>Wydania</value>
-  </data>
   <data name="Modify" xml:space="preserve">
     <value>Modyfikuj</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="Read on {0}" xml:space="preserve">
     <value>Czytaj na {0}</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
   </data>
   <data name="Total word count" xml:space="preserve">
     <value>Łączna liczba wyrazów</value>

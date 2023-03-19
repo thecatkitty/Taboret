@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Authors" xml:space="preserve">
-    <value>Autorzy</value>
-  </data>
   <data name="List of authors" xml:space="preserve">
     <value>Lista autorów</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
   </data>
   <data name="{0:N0} words" xml:space="preserve">
     <value>{0:N0} wyr.</value>

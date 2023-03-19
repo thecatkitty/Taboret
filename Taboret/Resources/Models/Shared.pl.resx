@@ -177,6 +177,9 @@
   <data name="Publishing date" xml:space="preserve">
     <value>Data publikacji</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
   <data name="Subject" xml:space="preserve">
     <value>Temat</value>
   </data>

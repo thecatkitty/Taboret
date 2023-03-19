@@ -7,7 +7,7 @@
 @model IEnumerable<Taboret.Models.Author>
 
 @{
- ViewData["Title"] = Localizer["Authors"];
+ ViewData["Title"] = SharedLocalizer["Authors"];
  ViewData["Description"] = Localizer["List of authors"];
  Layout = "~/Pages/Shared/_Layout.cshtml";
 
@@ -16,12 +16,12 @@
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@Localizer["Authors"]</li>
+  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+  <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Authors"]</li>
  </ol>
 </nav>
 
-<h1>@Localizer["Authors"]</h1>
+<h1>@SharedLocalizer["Authors"]</h1>
 
 <div class="row">
 

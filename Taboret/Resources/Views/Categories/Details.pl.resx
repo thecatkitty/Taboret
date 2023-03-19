@@ -120,10 +120,4 @@
   <data name="Articles in the category “{0}”" xml:space="preserve">
     <value>Artykuły w kategorii „{0}”</value>
   </data>
-  <data name="Categories" xml:space="preserve">
-    <value>Kategorie</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
 </root>

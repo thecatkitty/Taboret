@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Authors" xml:space="preserve">
-    <value>Autorzy</value>
-  </data>
   <data name="No. of articles" xml:space="preserve">
     <value>Liczba artykułów</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
   </data>
   <data name="Total word count" xml:space="preserve">
     <value>Łączna liczba wyrazów</value>

@@ -1,5 +1,8 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization;
+﻿@using Taboret.Models
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model IEnumerable<Taboret.Models.Article>
 
 @{
@@ -10,7 +13,7 @@
 
 <nav aria-label="breadcrumb">
  <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@Localizer["Start"]</a></li>
+  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
   <li class="breadcrumb-item active" aria-current="page">@Localizer["Searching"]</li>
  </ol>
 </nav>
