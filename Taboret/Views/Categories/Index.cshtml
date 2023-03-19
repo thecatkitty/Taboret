@@ -6,34 +6,34 @@
 @model IEnumerable<Taboret.Models.Category>
 
 @{
- ViewData["Title"] = SharedLocalizer["Categories"];
- ViewData["Description"] = Localizer["List of categories"];
- Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = SharedLocalizer["Categories"];
+    ViewData["Description"] = Localizer["List of categories"];
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Categories"]</li>
- </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Categories"]</li>
+    </ol>
 </nav>
 
 <h1>@Localizer["List of categories"]</h1>
 
 <div class="row">
 
- <div class="col">
+    <div class="col">
 
-  <div class="list-group">
-   @foreach (var category in Model.OrderBy(category => category.Name))
-   {
-    <a class="list-group-item list-group-item-action" asp-action="Details" asp-route-id="@category.Id">
-     @category.Name
-     <span class="text-muted">(@category.Articles.Count)</span>
-    </a>
-   }
-  </div>
+        <div class="list-group">
+            @foreach (var category in Model.OrderBy(category => category.Name))
+            {
+                <a class="list-group-item list-group-item-action" asp-action="Details" asp-route-id="@category.Id">
+                    @category.Name
+                    <span class="text-muted">(@category.Articles.Count)</span>
+                </a>
+            }
+        </div>
 
- </div>
+    </div>
 
 </div>

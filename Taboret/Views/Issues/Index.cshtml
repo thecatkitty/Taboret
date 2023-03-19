@@ -7,16 +7,16 @@
 @model IEnumerable<Taboret.Models.Issue>
 
 @{
- ViewData["Title"] = SharedLocalizer["Issues"];
- ViewData["Description"] = Localizer["List of issues"];
- Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = SharedLocalizer["Issues"];
+    ViewData["Description"] = Localizer["List of issues"];
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Issues"]</li>
- </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Issues"]</li>
+    </ol>
 </nav>
 
 <h1>@Localizer["List of issues"]</h1>
@@ -25,27 +25,27 @@
 .OrderBy(issue => issue.PublicationDate.Year)
 .GroupBy(issue => issue.PublicationDate.Year))
 {
- <div class="row">
+    <div class="row">
 
-  <div class="col-2">
-   <h3>@year.Key</h3>
-  </div>
+        <div class="col-2">
+            <h3>@year.Key</h3>
+        </div>
 
-  <div class="col">
-   @foreach (var magazine in year
-   .OrderBy(issue => issue.Magazine.Name)
-   .GroupBy(issue => issue.Magazine))
-   {
-    <p>
-     <b>@magazine.Key.Name:</b>
-     @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
-     {
-      <!-- TODO: Parametrize short signature mapping -->
-      <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
-     }
-    </p>
-   }
-  </div>
+        <div class="col">
+            @foreach (var magazine in year
+           .OrderBy(issue => issue.Magazine.Name)
+           .GroupBy(issue => issue.Magazine))
+            {
+                <p>
+                    <b>@magazine.Key.Name:</b>
+                    @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
+                    {
+                        <!-- TODO: Parametrize short signature mapping -->
+                        <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
+                    }
+                </p>
+            }
+        </div>
 
- </div>
+    </div>
 }

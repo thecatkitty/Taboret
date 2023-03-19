@@ -6,32 +6,32 @@
 @model IEnumerable<Taboret.Models.Article>
 
 @{
- ViewData["Title"] = Localizer["Searching"];
- ViewData["Description"] = Localizer["Searching for articles"];
- Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = Localizer["Searching"];
+    ViewData["Description"] = Localizer["Searching for articles"];
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@Localizer["Searching"]</li>
- </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["Searching"]</li>
+    </ol>
 </nav>
 
 <h1>@Localizer["Search results"]</h1>
 
 <div class="row">
- <div class="col">
-  <partial name="_SearchBox" />
- </div>
+    <div class="col">
+        <partial name="_SearchBox" />
+    </div>
 </div>
 
 @section Scripts{
- <script src="~/js/search.js"></script>
+    <script src="~/js/search.js"></script>
 }
 
 <div class="row">
- <div class="col">
-  <partial name="_ArticleList" model="Model" />
- </div>
+    <div class="col">
+        <partial name="_ArticleList" model="Model" />
+    </div>
 </div>

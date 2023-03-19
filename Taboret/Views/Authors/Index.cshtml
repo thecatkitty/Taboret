@@ -7,57 +7,57 @@
 @model IEnumerable<Taboret.Models.Author>
 
 @{
- ViewData["Title"] = SharedLocalizer["Authors"];
- ViewData["Description"] = Localizer["List of authors"];
- Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = SharedLocalizer["Authors"];
+    ViewData["Description"] = Localizer["List of authors"];
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 
- decimal maxWordCount = Model.Select(a => a.Articles.Sum(b => b.WordCount)).Max();
+    decimal maxWordCount = Model.Select(a => a.Articles.Sum(b => b.WordCount)).Max();
 }
 
 <nav aria-label="breadcrumb">
- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Authors"]</li>
- </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@SharedLocalizer["Authors"]</li>
+    </ol>
 </nav>
 
 <h1>@SharedLocalizer["Authors"]</h1>
 
 <div class="row">
 
- <div class="col">
+    <div class="col">
 
-  <table class="table">
-   <thead>
-    <tr>
-     <th>@Html.DisplayNameFor(m => m.Name)</th>
-     <th colspan="2">@Html.DisplayNameFor(m => m.Articles)</th>
-    </tr>
-   </thead>
-   <tbody>
-    @foreach (var author in Model.OrderByDescending(author => author.Articles.Sum(a => a.WordCount)))
-    {
-     <tr>
-      <td>
-       <a asp-action="Details" asp-route-id="@author.Id">@author.Name</a>
-      </td>
-      <td>@author.Articles.Count</td>
-      <td>
-       <div class="progress">
-        @{
-         var wordCount = author.Articles.Sum(a => a.WordCount);
-         var percentWidth = wordCount / maxWordCount * 100;
-        }
-        <div class="progress-bar" role="progressbar" style="width: @percentWidth.ToString(CultureInfo.InvariantCulture)%">
-         <span>@string.Format(Localizer["{0:N0} words"].Value, wordCount)</span>
-        </div>
-       </div>
-      </td>
-     </tr>
-    }
-   </tbody>
-  </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Name)</th>
+                    <th colspan="2">@Html.DisplayNameFor(m => m.Articles)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var author in Model.OrderByDescending(author => author.Articles.Sum(a => a.WordCount)))
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@author.Id">@author.Name</a>
+                        </td>
+                        <td>@author.Articles.Count</td>
+                        <td>
+                            <div class="progress">
+                                @{
+                                    var wordCount = author.Articles.Sum(a => a.WordCount);
+                                    var percentWidth = wordCount / maxWordCount * 100;
+                                }
+                                <div class="progress-bar" role="progressbar" style="width: @percentWidth.ToString(CultureInfo.InvariantCulture)%">
+                                    <span>@string.Format(Localizer["{0:N0} words"].Value, wordCount)</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
- </div>
+    </div>
 
 </div>

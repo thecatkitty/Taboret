@@ -7,225 +7,235 @@
 
 @{
     ViewData["Title"] = $"{Localizer["Modifying"].Value} - {Model.Magazine.Name} {Model.CoverSignature}"; ;
- Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
-  <li class="breadcrumb-item"><a href="/Issues">@SharedLocalizer["Issues"]</a></li>
-  <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@Model.Signature">@Model.Magazine.Name @Model.CoverSignature</a></li>
-  <li class="breadcrumb-item active" aria-current="page">@Localizer["Modifying"]</li>
- </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">@SharedLocalizer["Start"]</a></li>
+        <li class="breadcrumb-item"><a href="/Issues">@SharedLocalizer["Issues"]</a></li>
+        <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@Model.Signature">@Model.Magazine.Name @Model.CoverSignature</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["Modifying"]</li>
+    </ol>
 </nav>
 
 <h1>@Localizer["Modifying the issue"]</h1>
 
 <div class="row">
 
- <div class="col-md-4">
-  @if (ViewData["CoverPath"] == null)
-  {
-   <img class="d-block mx-auto mw-100" src="~/Assets/nocoth.png" alt="@Localizer["No cover image"]" />
-  }
-  else
-  {
-   <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="@string.Format(
+    <div class="col-md-4">
+        @if (ViewData["CoverPath"] == null)
+        {
+            <img class="d-block mx-auto mw-100" src="~/Assets/nocoth.png" alt="@Localizer["No cover image"]" />
+        }
+        else
+        {
+            <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="@string.Format(
          Localizer["Cover image of {0} issue {1}"].Value,
          Model.Magazine.Name,
          Model.CoverSignature)" />
-  }
- </div>
+        }
+    </div>
 
- <div class="col-md-4">
-  <form asp-action="Edit">
-   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-   <input type="hidden" asp-for="Signature" />
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Signature" />
 
-   <div class="form-group">
-    <label asp-for="CoverSignature" class="control-label"></label>
-    <input asp-for="CoverSignature" class="form-control" />
-    <span asp-validation-for="CoverSignature" class="text-danger"></span>
-   </div>
+            <div class="form-group">
+                <label asp-for="CoverSignature" class="control-label"></label>
+                <input asp-for="CoverSignature" class="form-control" />
+                <span asp-validation-for="CoverSignature" class="text-danger"></span>
+            </div>
 
-   <div class="form-group">
-    <label asp-for="PublicationDate" class="control-label"></label>
-    <input asp-for="PublicationDate" class="form-control" />
-    <span asp-validation-for="PublicationDate" class="text-danger"></span>
-   </div>
+            <div class="form-group">
+                <label asp-for="PublicationDate" class="control-label"></label>
+                <input asp-for="PublicationDate" class="form-control" />
+                <span asp-validation-for="PublicationDate" class="text-danger"></span>
+            </div>
 
-   <div class="form-group">
-    <label asp-for="Url" class="control-label"></label>
-    <input asp-for="Url" class="form-control" />
-    <span asp-validation-for="Url" class="text-danger"></span>
-   </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
 
-   <div class="form-group">
-    <label asp-for="PageCount" class="control-label"></label>
-    <input asp-for="PageCount" class="form-control" />
-    <span asp-validation-for="PageCount" class="text-danger"></span>
-   </div>
+            <div class="form-group">
+                <label asp-for="PageCount" class="control-label"></label>
+                <input asp-for="PageCount" class="form-control" />
+                <span asp-validation-for="PageCount" class="text-danger"></span>
+            </div>
 
-   <div class="form-group">
-    <label asp-for="CoverAuthors" for="coverAuthors" class="control-label"></label>
-    <input id="coverAuthors" name="coverAuthors" class="form-control" value="@ViewData["CoverAuthors"]" />
-   </div>
+            <div class="form-group">
+                <label asp-for="CoverAuthors" for="coverAuthors" class="control-label"></label>
+                <input id="coverAuthors" name="coverAuthors" class="form-control" value="@ViewData["CoverAuthors"]" />
+            </div>
 
-   <div class="form-group form-check">
-    <label class="form-check-label">
-     <input class="form-check-input" asp-for="IsArchived" />
-     @Localizer["Archiving completed"]
-    </label>
-   </div>
-   <div class="form-group">
-    <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
-   </div>
-  </form>
- </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsArchived" />
+                    @Localizer["Archiving completed"]
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 
 </div>
 
 
 <div class="row">
- <div class="col">
-  
-  @foreach (var article in Model.Articles)
-  {
-   <form class="card mb-3" asp-controller="Articles" asp-action="Edit" asp-route-id="@article.Id" method="post" id="@article.Id">
-    <input type="hidden" name="Id" value="@article.Id" />
-    <div class="card-header input-group">
-     <div class="input-group-prepend">
-      <span class="input-group-text">@article.OrdinalNumber</span>
-     </div>
-     <input class="form-control font-weight-bold" name="Title" value="@article.Title" />
-     <div class="input-group-append">
-      <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-     </div>
-    </div>
+    <div class="col">
 
-    <div class="card-body row">
-     <div class="col-md-6">
-      <div class="form-group">
-       <label>@SharedLocalizer["Subject"]</label>
-       <input class="form-control" name="Subject" value="@article.Subject"/>
-      </div>
-
-      <div class="form-group">
-       <label>@SharedLocalizer["Page"]</label>
-       <input type="number" class="form-control" name="Page" value="@article.Page"/>
-      </div>
-
-      <div class="form-group">
-       <label>@SharedLocalizer["Authors"]</label>
-       <input class="form-control" name="authors" value="@string.Join(", ", article.Authors.Select(author => author.Name))"/>
-      </div>
-
-      <div class="form-group">
-       <label>@SharedLocalizer["Category"]</label>
-       <select class="form-control" name="CategoryId">
-        @foreach (var category in (List<Category>)ViewData["Categories"])
+        @foreach (var article in Model.Articles)
         {
-         if (category.Id == article.CategoryId)
-         {
-          <option value="@category.Id" selected="selected">@category.Name</option>
-         }
-         else
-         {
-          <option value="@category.Id">@category.Name</option>
-         }
+            <form class="card mb-3" asp-controller="Articles" asp-action="Edit" asp-route-id="@article.Id" method="post" id="@article.Id">
+                <input type="hidden" name="Id" value="@article.Id" />
+                <div class="card-header input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@article.OrdinalNumber</span>
+                    </div>
+                    <input class="form-control font-weight-bold" name="Title" value="@article.Title" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                    </div>
+                </div>
+
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Subject"]</label>
+                            <input class="form-control" name="Subject" value="@article.Subject" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Page"]</label>
+                            <input type="number" class="form-control" name="Page" value="@article.Page" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Authors"]</label>
+                            <input class="form-control" name="authors" value="@string.Join(", ", article.Authors.Select(author => author.Name))" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Category"]</label>
+                            <select class="form-control" name="CategoryId">
+                                @foreach (var category in (List<Category>)ViewData["Categories"])
+                                {
+                                    if (category.Id == article.CategoryId)
+                                    {
+                                        <option value="@category.Id" selected="selected">@category.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Word count"]</label>
+                            <input type="number" class="form-control" name="WordCount" value="@article.WordCount" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Tags"]</label>
+                            <textarea class="form-control" name="tags">@string.Join(", ", article.Tags.Select(tag => tag.Name))</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>@SharedLocalizer["Lead"]</label>
+                            <textarea class="form-control" name="Lead">@article.Lead</textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
         }
-       </select>
-      </div>
 
-      <div class="form-group">
-       <label>@SharedLocalizer["Word count"]</label>
-       <input type="number" class="form-control" name="WordCount" value="@article.WordCount"/>
-      </div>
-     </div>
+        <form class="card text-white bg-success mb-3" asp-controller="Articles" asp-action="Create" method="post">
+            <input type="hidden" name="IssueSignature" value="@Model.Signature" />
+            <div class="card-header input-group">
+                <input class="form-control font-weight-bold" name="Title" placeholder="@Localizer["New article"]" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">@Localizer["Add"]</button>
+                </div>
+            </div>
 
-     <div class="col-md-6">
-      <div class="form-group">
-       <label>@SharedLocalizer["Tags"]</label>
-       <textarea class="form-control" name="tags">@string.Join(", ", article.Tags.Select(tag => tag.Name))</textarea>
-      </div>
+            <div class="card-body row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Subject"]</label>
+                        <input class="form-control" name="Subject" />
+                    </div>
 
-      <div class="form-group">
-       <label>@SharedLocalizer["Lead"]</label>
-       <textarea class="form-control" name="Lead">@article.Lead</textarea>
-      </div>
-     </div>
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Page"]</label>
+                        <input type="number" class="form-control" name="Page" value="1" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Authors"]</label>
+                        <input class="form-control" name="authors" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Category"]</label>
+                        <select class="form-control" name="CategoryId">
+                            @foreach (var category in (List<Category>)ViewData["Categories"])
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Word count"]</label>
+                        <input type="number" class="form-control" name="WordCount" value="0" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Tags"]</label>
+                        <textarea class="form-control" name="tags"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>@SharedLocalizer["Lead"]</label>
+                        <textarea class="form-control" name="Lead"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
-   </form>
-  }
-  
-  <form class="card text-white bg-success mb-3" asp-controller="Articles" asp-action="Create" method="post">
-   <input type="hidden" name="IssueSignature" value="@Model.Signature" />
-   <div class="card-header input-group">
-    <input class="form-control font-weight-bold" name="Title" placeholder="@Localizer["New article"]" />
-    <div class="input-group-append">
-     <button type="submit" class="btn btn-primary">@Localizer["Add"]</button>
-    </div>
-   </div>
-
-   <div class="card-body row">
-    <div class="col-md-6">
-     <div class="form-group">
-      <label>@SharedLocalizer["Subject"]</label>
-      <input class="form-control" name="Subject" />
-     </div>
-
-     <div class="form-group">
-      <label>@SharedLocalizer["Page"]</label>
-      <input type="number" class="form-control" name="Page" value="1" />
-     </div>
-
-     <div class="form-group">
-      <label>@SharedLocalizer["Authors"]</label>
-      <input class="form-control" name="authors" />
-     </div>
-
-     <div class="form-group">
-      <label>@SharedLocalizer["Category"]</label>
-      <select class="form-control" name="CategoryId">
-       @foreach (var category in (List<Category>)ViewData["Categories"])
-       {
-        <option value="@category.Id">@category.Name</option>
-       }
-      </select>
-     </div>
-
-     <div class="form-group">
-      <label>@SharedLocalizer["Word count"]</label>
-      <input type="number" class="form-control" name="WordCount" value="0" />
-     </div>
-    </div>
-
-    <div class="col-md-6">
-     <div class="form-group">
-      <label>@SharedLocalizer["Tags"]</label>
-      <textarea class="form-control" name="tags"></textarea>
-     </div>
-
-     <div class="form-group">
-      <label>@SharedLocalizer["Lead"]</label>
-      <textarea class="form-control" name="Lead"></textarea>
-     </div>
-    </div>
-   </div>
-  </form>
-
- </div>
 </div>
 
 
 @section Scripts {
- @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
- 
- <style>
-  textarea.form-control { resize: none }
-  .form-control[name=tags] { height: 8em }
-  .form-control[name=Lead] { height: 13em }
- </style>
- 
- <script src="~/js/edit.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <style>
+        textarea.form-control {
+            resize: none
+        }
+
+        .form-control[name=tags] {
+            height: 8em
+        }
+
+        .form-control[name=Lead] {
+            height: 13em
+        }
+    </style>
+
+    <script src="~/js/edit.js"></script>
 }
