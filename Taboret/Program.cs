@@ -26,7 +26,7 @@ namespace Taboret
             try
             {
                 var context = services.GetRequiredService<ArchiveContext>();
-                DbInitializer.Initialize(context);
+                context.Database.EnsureCreated();
             }
             catch (Exception ex)
             {
