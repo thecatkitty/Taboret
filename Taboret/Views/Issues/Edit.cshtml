@@ -1,10 +1,12 @@
 ﻿@using Taboret.Models
-@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model Taboret.Models.Issue
 
 @{
-    ViewData["Title"] = $"{Localizer["Modifying"]} - {Model.Magazine.Name} {Model.CoverSignature}"; ;
+    ViewData["Title"] = $"{Localizer["Modifying"].Value} - {Model.Magazine.Name} {Model.CoverSignature}"; ;
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
@@ -41,31 +43,31 @@
    <input type="hidden" asp-for="Signature" />
 
    <div class="form-group">
-    <label asp-for="CoverSignature" class="control-label">@Localizer["Issue number"]</label>
+    <label asp-for="CoverSignature" class="control-label"></label>
     <input asp-for="CoverSignature" class="form-control" />
     <span asp-validation-for="CoverSignature" class="text-danger"></span>
    </div>
 
    <div class="form-group">
-    <label asp-for="PublicationDate" class="control-label">@Localizer["Publishing date"]</label>
+    <label asp-for="PublicationDate" class="control-label"></label>
     <input asp-for="PublicationDate" class="form-control" />
     <span asp-validation-for="PublicationDate" class="text-danger"></span>
    </div>
 
    <div class="form-group">
-    <label asp-for="Url" class="control-label">@Localizer["URL"]</label>
+    <label asp-for="Url" class="control-label"></label>
     <input asp-for="Url" class="form-control" />
     <span asp-validation-for="Url" class="text-danger"></span>
    </div>
 
    <div class="form-group">
-    <label asp-for="PageCount" class="control-label">@Localizer["Number of pages"]</label>
+    <label asp-for="PageCount" class="control-label"></label>
     <input asp-for="PageCount" class="form-control" />
     <span asp-validation-for="PageCount" class="text-danger"></span>
    </div>
 
    <div class="form-group">
-    <label for="coverAuthors" class="control-label">@Localizer["Cover artists"]</label>
+    <label asp-for="CoverAuthors" for="coverAuthors" class="control-label"></label>
     <input id="coverAuthors" name="coverAuthors" class="form-control" value="@ViewData["CoverAuthors"]" />
    </div>
 
@@ -76,7 +78,7 @@
     </label>
    </div>
    <div class="form-group">
-    <input type="submit" value="Zapisz" class="btn btn-primary" />
+    <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
    </div>
   </form>
  </div>
@@ -104,22 +106,22 @@
     <div class="card-body row">
      <div class="col-md-6">
       <div class="form-group">
-       <label>@Localizer["Subject"]</label>
+       <label>@SharedLocalizer["Subject"]</label>
        <input class="form-control" name="Subject" value="@article.Subject"/>
       </div>
 
       <div class="form-group">
-       <label>@Localizer["Page number"]</label>
+       <label>@SharedLocalizer["Page"]</label>
        <input type="number" class="form-control" name="Page" value="@article.Page"/>
       </div>
 
       <div class="form-group">
-       <label>@Localizer["Authors"]</label>
+       <label>@SharedLocalizer["Authors"]</label>
        <input class="form-control" name="authors" value="@string.Join(", ", article.Authors.Select(author => author.Name))"/>
       </div>
 
       <div class="form-group">
-       <label>@Localizer["Category"]</label>
+       <label>@SharedLocalizer["Category"]</label>
        <select class="form-control" name="CategoryId">
         @foreach (var category in (List<Category>)ViewData["Categories"])
         {
@@ -136,19 +138,19 @@
       </div>
 
       <div class="form-group">
-       <label>@Localizer["Word count"]</label>
+       <label>@SharedLocalizer["Word count"]</label>
        <input type="number" class="form-control" name="WordCount" value="@article.WordCount"/>
       </div>
      </div>
 
      <div class="col-md-6">
       <div class="form-group">
-       <label>@Localizer["Tags"]</label>
+       <label>@SharedLocalizer["Tags"]</label>
        <textarea class="form-control" name="tags">@string.Join(", ", article.Tags.Select(tag => tag.Name))</textarea>
       </div>
 
       <div class="form-group">
-       <label>@Localizer["Lead"]</label>
+       <label>@SharedLocalizer["Lead"]</label>
        <textarea class="form-control" name="Lead">@article.Lead</textarea>
       </div>
      </div>
@@ -168,22 +170,22 @@
    <div class="card-body row">
     <div class="col-md-6">
      <div class="form-group">
-      <label>@Localizer["Subject"]</label>
+      <label>@SharedLocalizer["Subject"]</label>
       <input class="form-control" name="Subject" />
      </div>
 
      <div class="form-group">
-      <label>@Localizer["Page number"]</label>
+      <label>@SharedLocalizer["Page"]</label>
       <input type="number" class="form-control" name="Page" value="1" />
      </div>
 
      <div class="form-group">
-      <label>@Localizer["Authors"]</label>
+      <label>@SharedLocalizer["Authors"]</label>
       <input class="form-control" name="authors" />
      </div>
 
      <div class="form-group">
-      <label>@Localizer["Category"]</label>
+      <label>@SharedLocalizer["Category"]</label>
       <select class="form-control" name="CategoryId">
        @foreach (var category in (List<Category>)ViewData["Categories"])
        {
@@ -193,19 +195,19 @@
      </div>
 
      <div class="form-group">
-      <label>@Localizer["Word count"]</label>
+      <label>@SharedLocalizer["Word count"]</label>
       <input type="number" class="form-control" name="WordCount" value="0" />
      </div>
     </div>
 
     <div class="col-md-6">
      <div class="form-group">
-      <label>@Localizer["Tags"]</label>
+      <label>@SharedLocalizer["Tags"]</label>
       <textarea class="form-control" name="tags"></textarea>
      </div>
 
      <div class="form-group">
-      <label>@Localizer["Lead"]</label>
+      <label>@SharedLocalizer["Lead"]</label>
       <textarea class="form-control" name="Lead"></textarea>
      </div>
     </div>

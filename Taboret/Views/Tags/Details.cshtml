@@ -1,10 +1,13 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization;
+﻿@using Taboret.Models
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model Taboret.Models.Tag
 
 @{
  ViewData["Title"] = $"{Model.Name}";
- ViewData["Description"] = $"{Localizer["Tag"]} - {Model.Name}";
+ ViewData["Description"] = $"{SharedLocalizer["Tag"].Value} - {Model.Name}";
  Layout = "_Layout";
 }
 

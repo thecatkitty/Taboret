@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Article" xml:space="preserve">
-    <value>Artykuł</value>
-  </data>
-  <data name="Articles" xml:space="preserve">
-    <value>Artykuły</value>
-  </data>
-  <data name="Authors" xml:space="preserve">
-    <value>Autorzy</value>
-  </data>
   <data name="Category and tags" xml:space="preserve">
     <value>Kategoria i tagi</value>
-  </data>
-  <data name="Issue" xml:space="preserve">
-    <value>Wydanie</value>
-  </data>
-  <data name="Page" xml:space="preserve">
-    <value>Strona</value>
   </data>
 </root>

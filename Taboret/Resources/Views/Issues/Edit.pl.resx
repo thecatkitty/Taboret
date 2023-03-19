@@ -123,26 +123,11 @@
   <data name="Archiving completed" xml:space="preserve">
     <value>Archiwizacja ukończona</value>
   </data>
-  <data name="Authors" xml:space="preserve">
-    <value>Autorzy</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Kategoria</value>
-  </data>
-  <data name="Cover artists" xml:space="preserve">
-    <value>Autorzy okładki</value>
-  </data>
   <data name="Cover image of {0} issue {1}" xml:space="preserve">
     <value>Okładka {0} nr {1}</value>
   </data>
-  <data name="Issue number" xml:space="preserve">
-    <value>Numer wydania</value>
-  </data>
   <data name="Issues" xml:space="preserve">
     <value>Wydania</value>
-  </data>
-  <data name="Lead" xml:space="preserve">
-    <value>Lid</value>
   </data>
   <data name="Modifying" xml:space="preserve">
     <value>Modyfikowanie</value>
@@ -156,31 +141,10 @@
   <data name="No cover image" xml:space="preserve">
     <value>Brak okładki</value>
   </data>
-  <data name="Number of pages" xml:space="preserve">
-    <value>Liczba stron</value>
-  </data>
-  <data name="Page number" xml:space="preserve">
-    <value>Numer strony</value>
-  </data>
-  <data name="Publishing date" xml:space="preserve">
-    <value>Data publikacji</value>
-  </data>
   <data name="Save" xml:space="preserve">
     <value>Zapisz</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
-  </data>
-  <data name="Subject" xml:space="preserve">
-    <value>Temat</value>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Tagi</value>
-  </data>
-  <data name="URL" xml:space="preserve">
-    <value>Adres URL</value>
-  </data>
-  <data name="Word count" xml:space="preserve">
-    <value>Liczba wyrazów</value>
   </data>
 </root>

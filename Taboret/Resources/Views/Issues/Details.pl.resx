@@ -120,26 +120,14 @@
   <data name="Approved" xml:space="preserve">
     <value>Zatwierdzony</value>
   </data>
-  <data name="Archiving status" xml:space="preserve">
-    <value>Stan archiwizacji</value>
-  </data>
-  <data name="Cover artists" xml:space="preserve">
-    <value>Autorzy okładki</value>
-  </data>
   <data name="Cover image of {0} issue {1}" xml:space="preserve">
     <value>Okładka {0} nr {1}</value>
   </data>
   <data name="In progress" xml:space="preserve">
     <value>W trakcie</value>
   </data>
-  <data name="Issue" xml:space="preserve">
-    <value>Wydanie</value>
-  </data>
   <data name="Issues" xml:space="preserve">
     <value>Wydania</value>
-  </data>
-  <data name="Last entry update:" xml:space="preserve">
-    <value>Ostatnia aktualizacja wpisu:</value>
   </data>
   <data name="Modify" xml:space="preserve">
     <value>Modyfikuj</value>
@@ -147,14 +135,8 @@
   <data name="No cover image" xml:space="preserve">
     <value>Brak okładki</value>
   </data>
-  <data name="Number of pages" xml:space="preserve">
-    <value>Liczba stron</value>
-  </data>
   <data name="Pending" xml:space="preserve">
     <value>W kolejce</value>
-  </data>
-  <data name="Publishing date" xml:space="preserve">
-    <value>Data publikacji</value>
   </data>
   <data name="Read on {0}" xml:space="preserve">
     <value>Czytaj na {0}</value>

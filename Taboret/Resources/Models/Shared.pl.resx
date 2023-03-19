@@ -117,16 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Archiving status" xml:space="preserve">
+    <value>Stan archiwizacji</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Artykuł</value>
+  </data>
+  <data name="Articles" xml:space="preserve">
+    <value>Artykuły</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
   <data name="Authors" xml:space="preserve">
     <value>Autorzy</value>
   </data>
-  <data name="List of authors" xml:space="preserve">
-    <value>Lista autorów</value>
+  <data name="Categories" xml:space="preserve">
+    <value>Kategorie</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
+  <data name="Category" xml:space="preserve">
+    <value>Kategoria</value>
   </data>
-  <data name="{0:N0} words" xml:space="preserve">
-    <value>{0:N0} wyr.</value>
+  <data name="Cover artists" xml:space="preserve">
+    <value>Autorzy okładki</value>
+  </data>
+  <data name="Designed covers" xml:space="preserve">
+    <value>Zaprojektowane okładki</value>
+  </data>
+  <data name="Issue" xml:space="preserve">
+    <value>Wydanie</value>
+  </data>
+  <data name="Issue number" xml:space="preserve">
+    <value>Numer wydania</value>
+  </data>
+  <data name="Issues" xml:space="preserve">
+    <value>Wydania</value>
+  </data>
+  <data name="Last modified" xml:space="preserve">
+    <value>Ostatnia aktualizacja</value>
+  </data>
+  <data name="Lead" xml:space="preserve">
+    <value>Lid</value>
+  </data>
+  <data name="Magazine" xml:space="preserve">
+    <value>Magazyn</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="No." xml:space="preserve">
+    <value>Nr</value>
+  </data>
+  <data name="Number of pages" xml:space="preserve">
+    <value>Liczba stron</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Strona</value>
+  </data>
+  <data name="Publishing date" xml:space="preserve">
+    <value>Data publikacji</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Temat</value>
+  </data>
+  <data name="Tag" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tagi</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Tytuł</value>
+  </data>
+  <data name="URL" xml:space="preserve">
+    <value>Adres URL</value>
+  </data>
+  <data name="Word count" xml:space="preserve">
+    <value>Liczba wyrazów</value>
   </data>
 </root>

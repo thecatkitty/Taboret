@@ -1,19 +1,22 @@
 ﻿@using Taboret.Controllers
-@using Microsoft.AspNetCore.Mvc.Localization;
+@using Taboret.Models
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model ICollection<Taboret.Models.Article>
 
 
-<h2>@Localizer["Articles"]</h2>
+<h2>@SharedLocalizer["Articles"]</h2>
    
 <table class="table table-hover">
 
  <thead>
  <tr>
-  <th scope="col">@Localizer["Article"]</th>
-  <th scope="col">@Localizer["Authors"]</th>
+  <th scope="col">@SharedLocalizer["Article"]</th>
+  <th scope="col">@SharedLocalizer["Authors"]</th>
   <th scope="col">@Localizer["Category and tags"]</th>
-  <th scope="col">@((string)ViewData["ArticleListColumn"] == "page" ? Localizer["Page"] : Localizer["Issue"])</th>
+  <th scope="col">@((string)ViewData["ArticleListColumn"] == "page" ? SharedLocalizer["Page"] : SharedLocalizer["Issue"])</th>
  </tr>
  </thead>
     

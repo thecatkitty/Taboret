@@ -1,6 +1,9 @@
-﻿@using System.Globalization
-@using Microsoft.AspNetCore.Mvc.Localization;
+﻿@using Taboret.Models
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model IEnumerable<Taboret.Models.Author>
 
 @{
@@ -27,8 +30,8 @@
   <table class="table">
    <thead>
     <tr>
-     <th>@Localizer["Name"]</th>
-     <th colspan="2">@Localizer["Articles"]</th>
+     <th>@Html.DisplayNameFor(m => m.Name)</th>
+     <th colspan="2">@Html.DisplayNameFor(m => m.Articles)</th>
     </tr>
    </thead>
    <tbody>

@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using Taboret.Data;
+using Taboret.Models;
 
 namespace Taboret
 {
@@ -53,7 +54,12 @@ namespace Taboret
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRazorPages()
-                .AddViewLocalization();
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(Shared));
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

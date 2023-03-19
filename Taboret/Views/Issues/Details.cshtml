@@ -1,11 +1,14 @@
 ﻿@using Taboret.Controllers
-@using Microsoft.AspNetCore.Mvc.Localization;
+@using Taboret.Models
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared> SharedLocalizer
 @model Taboret.Models.Issue
 
 @{
  ViewData["Title"] = $"{Model.Magazine.Name} {Model.CoverSignature}";
- ViewData["Description"] = $"{Localizer["Issue"]} - {Model.Magazine.Name} {Model.CoverSignature}";
+    ViewData["Description"] = $"{SharedLocalizer["Issue"].Value} - {Model.Magazine.Name} {Model.CoverSignature}";
  ViewData["ArticleListColumn"] = "page";
  Layout = "~/Pages/Shared/_Layout.cshtml";
 }
@@ -53,16 +56,16 @@
 
   <dl>
 
-   <dt>@Localizer["Publishing date"]</dt>
+   <dt>@Html.DisplayNameFor(m => m.PublicationDate)</dt>
    <dd>@Model.PublicationDate.ToShortDateString()</dd>
 
-   <dt>@Localizer["Number of pages"]</dt>
+   <dt>@Html.DisplayNameFor(m => m.PageCount)</dt>
    <dd>@Model.PageCount</dd>
 
    <dt>@Localizer["Total word count"]</dt>
    <dd>@Model.Articles.Sum(a => a.WordCount).ToString("N0")</dd>
 
-   <dt>@Localizer["Cover artists"]</dt>
+   <dt>@Html.DisplayNameFor(m => m.CoverAuthors)</dt>
    <dd>
     @foreach (var author in Model.CoverAuthors)
     {
@@ -70,7 +73,7 @@
     }
    </dd>
 
-   <dt>@Localizer["Archiving status"]</dt>
+   <dt>@Html.DisplayNameFor(m => m.IsArchived)</dt>
    <dd>
     @if (Model.IsArchived)
     {
@@ -88,7 +91,7 @@
 
   </dl>
 
-  <p class="text-muted">@Localizer["Last entry update:"] @Model.UpdateTime.ToShortDateString()</p>
+  <p class="text-muted">@Html.DisplayNameFor(m => m.UpdateTime): @Model.UpdateTime.ToShortDateString()</p>
  </div>
 
 </div>
