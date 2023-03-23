@@ -1,7 +1,9 @@
 ﻿@using System.Text.RegularExpressions
 @using Taboret.Models
+@using Microsoft.Extensions.Configuration
 @using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@inject IConfiguration Configuration
 @inject IViewLocalizer Localizer
 @inject IStringLocalizer<Shared> SharedLocalizer
 @model IEnumerable<Taboret.Models.Issue>
@@ -40,8 +42,12 @@
                     <b>@magazine.Key.Name:</b>
                     @foreach (var issue in magazine.OrderBy(issue => issue.PublicationDate))
                     {
-                        <!-- TODO: Parametrize short signature mapping -->
-                        <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">@Regex.Replace(issue.CoverSignature, @"/\d\d\d\d", "")</a>
+                        <a asp-action="Details" asp-route-id="@issue.Signature" class="btn btn-sm @(issue.IsArchived ? "btn-success" : issue.Articles.Count > 0 ? "btn-warning" : "btn-danger")">
+                            @Regex.Replace(
+                                issue.CoverSignature,
+                                Configuration["Taboret:SignatureShortening:From"],
+                                Configuration["Taboret:SignatureShortening:To"])
+                        </a>
                     }
                 </p>
             }
