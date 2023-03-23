@@ -12,9 +12,8 @@
 
 @section AfterHeader
     {
-    <!-- TODO: Parametrize colors -->
-    <div class="jumbotron rounded-0" style="background-color: #1848a0">
-        <h1 class="mb-5 text-center" style="color: #ed892a">@Configuration["Taboret:SiteName"]</h1>
+    <div class="jumbotron rounded-0" style="background-color: @Configuration["Taboret:HomePage:Background"]">
+        <h1 class="mb-5 text-center" style="color: @Configuration["Taboret:HomePage:Foreground"]">@Configuration["Taboret:SiteName"]</h1>
         <div class="container">
             <partial name="_SearchBox" />
         </div>
