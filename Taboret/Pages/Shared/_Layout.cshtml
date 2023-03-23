@@ -1,8 +1,7 @@
 ﻿@using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 <!DOCTYPE html>
-<!-- TODO: Report the actual language -->
-<html lang="en">
+<html lang="@System.Globalization.CultureInfo.CurrentCulture.Name">
 
 <head>
     <meta charset="utf-8" />

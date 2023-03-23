@@ -31,8 +31,8 @@ namespace Taboret
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                options.SetDefaultCulture("pl-PL");
-                options.AddSupportedUICultures("pl-PL");
+                options.AddSupportedUICultures("en", "pl");
+                options.SetDefaultCulture(Configuration["Taboret:Culture"]);
                 options.FallBackToParentUICultures = true;
             });
 
