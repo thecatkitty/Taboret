@@ -1,6 +1,8 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration
 @using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@inject IConfiguration Configuration
 @inject IViewLocalizer Localizer
 @inject IStringLocalizer<Taboret.Models.Shared> SharedLocalizer
 @model Taboret.Pages.IndexModel
@@ -10,9 +12,9 @@
 
 @section AfterHeader
     {
-    <!-- TODO: Parametrize name and colors -->
+    <!-- TODO: Parametrize colors -->
     <div class="jumbotron rounded-0" style="background-color: #1848a0">
-        <h1 class="mb-5 text-center" style="color: #ed892a">Archiwum ET</h1>
+        <h1 class="mb-5 text-center" style="color: #ed892a">@Configuration["Taboret:SiteName"]</h1>
         <div class="container">
             <partial name="_SearchBox" />
         </div>

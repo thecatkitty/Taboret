@@ -1,19 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
 <!-- TODO: Report the actual language -->
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Parametrize site name -->
-    <title>@ViewData["Title"] - Archiwum Equinox Times</title>
+    <title>@ViewData["Title"] - @Configuration["Taboret:SiteName"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <!-- TODO: Parametrize Twitter summary -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@@EquinoxTimes" />
-    <meta name="twitter:title" content="Archiwum Equinox Times" />
+    <meta name="twitter:site" content="@@@Configuration["Taboret:TwitterName"] />
+    <meta name="twitter:title" content="@Configuration["Taboret:SiteName"]" />
     <meta name="twitter:description" content="@ViewData["Description"]" />
 </head>
 
@@ -22,8 +22,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <!-- TODO: Parametrize site name -->
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Archiwum Equinox Times</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">@Configuration["Taboret:SiteName"]</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -47,8 +46,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <!-- TODO: Parametrize copyright info -->
-            &copy; 2021-2023 <a href="https://catk.it/" target="_blank">Mateusz „Catkitty” Karcz</a>
+            @Html.Raw(Configuration["Taboret:Copyright"])
+            Taboret © 2021-2023 <a href="https://celones.pl/" target="_blank">Mateusz Karcz</a>.
         </div>
     </footer>
 
