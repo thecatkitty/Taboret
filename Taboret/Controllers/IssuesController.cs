@@ -55,13 +55,7 @@ namespace Taboret.Controllers
 
             SetCoverPath(issue);
 
-            var viewerHost = new Uri(issue.Url).Host;
-            ViewData["IssueViewer"] = viewerHost switch
-            {
-                "issuu.com" => PublisherHandler.Issuu,
-                "newsstand.joomag.com" => PublisherHandler.Newsstand,
-                _ => PublisherHandler.CreateDefaultHandler(viewerHost)
-            };
+            ViewData["IssueViewer"] = PublisherHandler.GetFromUrl(issue.Url);
 
             return View(issue);
         }

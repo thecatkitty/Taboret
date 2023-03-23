@@ -42,9 +42,16 @@
     <div class="col-md-8">
 
         <a class="btn btn-primary" target="_blank" href="@Model.Url">
-            @string.Format(
-            Localizer["Read on {0}"].Value,
-            PublisherHandler.GetFromUrl(Model.Url).Name)
+            @{
+                if (@ViewData["IssueViewer"] == PublisherHandler.Pdf)
+                {
+                    @Localizer["Read PDF"]
+                }
+                else
+                {
+                    @string.Format(Localizer["Read on {0}"].Value, (ViewData["IssueViewer"] as PublisherHandler).Name)
+                }
+            }
         </a>
 
         @if (User?.Identity?.IsAuthenticated ?? false)

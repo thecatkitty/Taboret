@@ -138,6 +138,9 @@
   <data name="Read on {0}" xml:space="preserve">
     <value>Czytaj na {0}</value>
   </data>
+  <data name="Read PDF" xml:space="preserve">
+    <value>Czytaj PDF</value>
+  </data>
   <data name="Total word count" xml:space="preserve">
     <value>Łączna liczba wyrazów</value>
   </data>

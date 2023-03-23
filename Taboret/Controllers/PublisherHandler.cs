@@ -12,6 +12,11 @@ namespace Taboret.Controllers
 
         public static PublisherHandler GetFromUrl(string url)
         {
+            if (url.EndsWith(".pdf"))
+            {
+                return Pdf;
+            }
+
             var viewerHost = new Uri(url).Host;
             return viewerHost switch
             {
@@ -20,6 +25,12 @@ namespace Taboret.Controllers
                 _ => CreateDefaultHandler(viewerHost)
             };
         }
+
+        public static PublisherHandler Pdf = new()
+        {
+            Name = "PDF",
+            GetPageUrl = article => $"{article.Issue.Url}#page={article.Page}"
+        };
 
         public static PublisherHandler Issuu = new()
         {
