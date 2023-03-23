@@ -1,6 +1,8 @@
 ﻿@page
-@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Taboret.Models.Shared> SharedLocalizer
 @model Taboret.Pages.IndexModel
 @{
     ViewData["Title"] = Localizer["Start"];
@@ -23,7 +25,7 @@
 
         <div class="card bg-light">
             <div class="card-body">
-                <h5 class="card-title">Wydania</h5>
+                <h5 class="card-title">@SharedLocalizer["Issues"]</h5>
                 <p class="card-text">
                     @string.Format(
                     Localizer["Indexed {0} of {1} issues. This amounts to {2} articles consisting of {3:N0} words."].Value,
@@ -39,7 +41,7 @@
 
         <div class="card bg-light">
             <div class="card-body">
-                <h5 class="card-title">Autorzy</h5>
+                <h5 class="card-title">@SharedLocalizer["Authors"]</h5>
                 <p class="card-text">
                     @string.Format(
                     Localizer["The number of authors of indexed articles and covers is {0}."].Value,
@@ -51,7 +53,7 @@
 
         <div class="card bg-light">
             <div class="card-body">
-                <h5 class="card-title">Kategorie</h5>
+                <h5 class="card-title">@SharedLocalizer["Categories"]</h5>
                 <p class="card-text">
                     @string.Format(
                     Localizer["Currently articles are placed in {0} categories."].Value,
@@ -63,7 +65,7 @@
 
         <div class="card bg-light">
             <div class="card-body">
-                <h5 class="card-title">Tagi</h5>
+                <h5 class="card-title">@SharedLocalizer["Tags"]</h5>
                 <p class="card-text">
                     @string.Format(
                     Localizer["Every tag corresponds to some concept related to tagged articles. There's {0} of them."].Value,
