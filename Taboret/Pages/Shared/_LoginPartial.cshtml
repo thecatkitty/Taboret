@@ -1,6 +1,8 @@
+@using Microsoft.Extensions.Configuration
 @using Microsoft.AspNetCore.Identity
 @using Taboret.Areas.Identity
 @using Microsoft.AspNetCore.Mvc.Localization;
+@inject IConfiguration Configuration
 @inject IViewLocalizer Localizer
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -15,8 +17,11 @@
             <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@string.Format(Localizer["Hi, {0}!"].Value, discordUser.Username)</a>
         </li>
         <li class="nav-item">
-            <!-- TODO: Parametrize navigation links -->
-            <a class="nav-link" href="https://dav.equinoxtimes.pl/">DAV</a>
+            @foreach (var item in Configuration.GetSection("Taboret:PrivateNavigation").Get<List<string>>())
+            {
+                var parts = item.Split('|', 2);
+                <a class="nav-link" href="@parts[1]">@parts[0]</a>
+            }
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout">@Localizer["Log out"]</a>
