@@ -53,8 +53,6 @@ namespace Taboret.Controllers
                 return NotFound();
             }
 
-            SetCoverPath(issue);
-
             ViewData["IssueViewer"] = PublisherHandler.GetFromUrl(issue.Url);
 
             return View(issue);
@@ -106,8 +104,6 @@ namespace Taboret.Controllers
             {
                 return NotFound();
             }
-
-            SetCoverPath(issue);
 
             ViewData["CoverAuthors"] = string.Join(", ", issue.CoverAuthors
                 .Select(author => author.Name));
@@ -209,16 +205,6 @@ namespace Taboret.Controllers
         private bool IssueExists(string id)
         {
             return _context.Issues.Any(e => e.Signature == id);
-        }
-
-        private void SetCoverPath(Issue issue)
-        {
-            // TODO: Parametrize covers thumbnail directory
-            var coverPath = "/coth/" + issue.Signature + ".png";
-            if (System.IO.File.Exists(Path.Combine(_environment.ContentRootPath, "Assets") + coverPath))
-            {
-                ViewData["CoverPath"] = coverPath;
-            }
         }
     }
 }

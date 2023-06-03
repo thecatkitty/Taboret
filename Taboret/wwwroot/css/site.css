@@ -88,3 +88,7 @@ body {
 .ui-menu li.articles .ui-menu-item-wrapper.ui-state-active a {
   color: #0366d6;
 }
+
+.row > div > object {
+    max-width: 100%;
+}

@@ -1,7 +1,9 @@
 ﻿@using Taboret.Controllers
 @using Taboret.Models
+@using Microsoft.Extensions.Configuration
 @using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@inject IConfiguration Configuration
 @inject IViewLocalizer Localizer
 @inject IStringLocalizer<Shared> SharedLocalizer
 @model Taboret.Models.Issue
@@ -26,17 +28,12 @@
 <div class="row">
 
     <div class="col-md-4">
-        @if (ViewData["CoverPath"] == null)
-        {
-            <img class="d-block mx-auto mw-100" src="~/Assets/nocoth.png" alt="@Localizer["No cover image"]" />
-        }
-        else
-        {
-            <img class="d-block mx-auto mw-100" src="~/Assets@(ViewData["CoverPath"])" alt="@string.Format(
-         Localizer["Cover image of {0} issue {1}"].Value,
-         Model.Magazine.Name,
-         Model.CoverSignature)" />
-        }
+        <object data="@(Configuration["Taboret:CoverStorage"])@(Model.Signature).png" type="image/png" title="@string.Format(
+            Localizer["Cover image of {0} issue {1}"].Value,
+            Model.Magazine.Name,
+            Model.CoverSignature)">
+            <img src="~/Assets/nocoth.png" alt="@Localizer["No cover image"]" />
+        </object>
     </div>
 
     <div class="col-md-8">
