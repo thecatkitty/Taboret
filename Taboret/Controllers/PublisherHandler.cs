@@ -22,7 +22,7 @@ namespace Taboret.Controllers
             {
                 "issuu.com" => Issuu,
                 "newsstand.joomag.com" => Newsstand,
-                _ => CreateDefaultHandler(viewerHost)
+                _ => CreateDefaultHandler(url)
             };
         }
 
