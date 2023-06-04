@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add new" xml:space="preserve">
-    <value>Dodaj nowe</value>
+  <data name="Create" xml:space="preserve">
+    <value>Utwórz</value>
   </data>
-  <data name="List of issues" xml:space="preserve">
-    <value>Lista wydań</value>
+  <data name="Creating" xml:space="preserve">
+    <value>Tworzenie</value>
+  </data>
+  <data name="Creating an issue" xml:space="preserve">
+    <value>Tworzenie wydania</value>
+  </data>
+  <data name="eg. 04/2020 (34)" xml:space="preserve">
+    <value>np. 04/2020 (34)</value>
   </data>
 </root>

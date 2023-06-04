@@ -21,7 +21,10 @@
     </ol>
 </nav>
 
-<h1>@Localizer["List of issues"]</h1>
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <h1>@Localizer["List of issues"] <a class="btn btn-primary" asp-action="Create">+ @Localizer["Add new"]</a></h1>
+}
 
 @foreach (var year in Model
 .OrderBy(issue => issue.PublicationDate.Year)

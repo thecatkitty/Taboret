@@ -16,11 +16,14 @@ namespace Taboret.Models
         public DateTime PublicationDate { get; set; }
 
         [Display(Name = "Issue number")]
+        [Required(AllowEmptyStrings = false)]
         public string CoverSignature { get; set; }
 
+        [DataType(DataType.Url)]
         [Display(Name = "URL")]
         public string Url { get; set; }
 
+        [Range(1, int.MaxValue)]
         [Display(Name = "Number of pages")]
         public uint PageCount { get; set; }
 

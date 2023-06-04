@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -58,31 +59,51 @@ namespace Taboret.Controllers
             return View(issue);
         }
 
-#if false
         // GET: Issues/Create
+        [Authorize]
         public IActionResult Create()
         {
-            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature");
+            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, nameof(Magazine.Signature), nameof(Magazine.Name), _context.Magazines.ToList().Last().Signature);
             return View();
         }
 
         // POST: Issues/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MagazineSignature,Signature,PublicationDate,CoverSignature,Url,PageCount,IsArchived,UpdateTime")] Issue issue)
+        [Authorize]
+        public async Task<IActionResult> Create([Bind("MagazineSignature,PublicationDate,CoverSignature,Url,PageCount")] Issue issue)
         {
-            if (ModelState.IsValid)
+            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, nameof(Magazine.Signature), nameof(Magazine.Name), issue.MagazineSignature);
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(issue);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(issue);
             }
-            ViewData["MagazineSignature"] = new SelectList(_context.Magazines, "Signature", "Signature", issue.MagazineSignature);
-            return View(issue);
+
+            var signatureYear = Regex.Match(issue.CoverSignature, "\\d{4}");
+            if (!signatureYear.Success)
+            {
+                ModelState.AddModelError(nameof(Issue.CoverSignature), "Cover signature doesn't contain a year");
+                return View(issue);
+            }
+
+            var signatureOrdinal = Regex.Match(issue.CoverSignature.Replace(signatureYear.Value, string.Empty), "\\d+");
+            if (!signatureOrdinal.Success)
+            {
+                issue.Signature = issue.MagazineSignature + signatureYear.Value;
+            }
+            else
+            {
+                issue.Signature = issue.MagazineSignature + signatureYear.Value[^2..] + signatureOrdinal.Value;
+            }
+
+            issue.UpdateTime = DateTime.UtcNow;
+            _context.Add(issue);
+            await _context.SaveChangesAsync();
+
+            var id = issue.Signature;
+            return RedirectToAction(nameof(Details), new { id });
         }
-#endif
 
         // GET: Issues/Edit/5
         [Authorize]
@@ -132,7 +153,11 @@ namespace Taboret.Controllers
                 try
                 {
                     var issue = _context.Issues
+                        .Include(i => i.Magazine)
                         .Include(i => i.CoverAuthors)
+                        .Include(i => i.Articles).ThenInclude(a => a.Authors)
+                        .Include(i => i.Articles).ThenInclude(a => a.Category)
+                        .Include(i => i.Articles).ThenInclude(a => a.Tags)
                         .First(i => i.Signature == id);
                     issue.PublicationDate = input.PublicationDate;
                     issue.CoverSignature = input.CoverSignature;
